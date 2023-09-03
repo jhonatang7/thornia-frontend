@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast"
 import { NextResponse } from "next/server";
 import { useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 const signUpFormSchema = zod
   .object({
@@ -79,14 +80,13 @@ export default function SignUp() {
       } else throw new Error();
     } catch (error) {
       setRequestStatus("failure");
-      let { id } = toast({
+      toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: "There was a problem with your request."
       })
 
       console.log(error)
-      console.log(id)
     }
   }
 
@@ -182,6 +182,7 @@ export default function SignUp() {
           Inicia sesión
         </Button>
       </p>
+      <Toaster/>
     </div>
   );
 }
