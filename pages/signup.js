@@ -1,8 +1,6 @@
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as zod from "zod";
-import { md5 } from "@/utils/md5";
 
 import {
   Form,
@@ -18,33 +16,13 @@ import { useToast } from "@/components/ui/use-toast"
 import { NextResponse } from "next/server";
 import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
-
-const signUpFormSchema = zod
-  .object({
-    name: zod
-      .string({ required_error: "Introduce tu nombre" })
-      .min(3, { message: "Debe tener al menos 3 caracteres" })
-      .max(50, { message: "No debe pasar de 50 caracteres" }),
-    email: zod
-      .string({ required_error: "Introduce tu correo" })
-      .email({ message: "Ingresa un correo válido" }),
-    password: zod
-      .string({ required_error: "Introduce una contraseña" })
-      .regex(/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/, {
-        message:
-          "Debe tener al menos 6 caracteres, una letra, un dígito, un caracter especial",
-      }),
-    confirmPassword: zod.string({ required_error: "Reescribe tu contraseña" }),
-  })
-  .required()
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Las contraseñas no coinciden",
-    path: ["confirmPassword"],
-  });
+import { signUpFormSchema } from "@/schemas/sign-up-form-schema";
+import { signUp } from "@/services/authentication-service";
+import { saveValueToLocalStorage } from "@/services/local-storage-service";
 
 export default function SignUp() {
-  const [requestStatus, setRequestStatus] = useState("initial");
-  const { toast } = useToast()
+  const [isRequestInProgress, setIsRequestInProgress] = useState(false);
+  const { toast } = useToast();
 
   const signUpForm = useForm({
     resolver: zodResolver(signUpFormSchema),
@@ -58,35 +36,21 @@ export default function SignUp() {
   });
 
   async function onSubmit(signUpFormValues) {
-    setRequestStatus("inProgress");
-    signUpFormValues.password = md5(signUpFormValues.password);
+    setIsRequestInProgress(true);
     delete signUpFormValues.confirmPassword;
+    const { success, payload } = await signUp(signUpFormValues)
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/users/new`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(signUpFormValues),
-        }
-      );
-
-      if (response.ok) {
-        setRequestStatus("success");
-        NextResponse.redirect("/index");
-      } else throw new Error();
-    } catch (error) {
-      setRequestStatus("failure");
+    if (success) {
+      saveValueToLocalStorage(process.env.NEXT_PUBLIC_API_HOST, payload)
+      setIsRequestInProgress(false);
+      NextResponse.redirect('/index')
+    }
+    else {
+      setIsRequestInProgress(false);
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request."
+        title: "Ups! Ocurrió un error inesperado, inténtalo de nuevo"
       })
-
-      console.log(error)
     }
   }
 
@@ -162,16 +126,16 @@ export default function SignUp() {
           <Button
             type="submit"
             className="w-full"
-            disabled={requestStatus === "inProgress"}
+            disabled={isRequestInProgress}
           >
-            {requestStatus === "inProgress" && (
+            {isRequestInProgress && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
 
-            {requestStatus !== "inProgress" ? (
-              <span>Crear cuenta</span>
-            ) : (
+            {isRequestInProgress ? (
               <span>Espera un momento...</span>
+            ) : (
+              <span>Crear cuenta</span>
             )}
           </Button>
         </form>
@@ -182,7 +146,7 @@ export default function SignUp() {
           Inicia sesión
         </Button>
       </p>
-      <Toaster/>
+      <Toaster />
     </div>
   );
 }
