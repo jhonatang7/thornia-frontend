@@ -39,7 +39,7 @@ export async function signUp(user) {
 
 export async function signIn({ email, password }) {
   password = md5(password);
-  
+
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_HOST}/users/signin`,
@@ -54,15 +54,19 @@ export async function signIn({ email, password }) {
 
     if (response.ok) {
       let responseBody = await response.json();
-      console.log(responseBody);
       return {
         success: true,
         payload: responseBody.token,
       };
+    } else if (response.status === 403) {
+      return {
+        success: false,
+        payload: "Credenciales incorrectas"
+      }
     } else {
       return {
         success: false,
-        payload: response.status,
+        payload: "Ups! Ocurrió un error inesperado, inténtalo de nuevo",
       };
     }
   } catch (error) {

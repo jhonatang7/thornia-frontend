@@ -48,7 +48,7 @@ export default function SignUp() {
       setIsRequestInProgress(false);
       toast({
         variant: "destructive",
-        title: "Ups! Ocurrió un error inesperado, inténtalo de nuevo"
+        title: payload
       });
     }
 
