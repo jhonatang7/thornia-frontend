@@ -18,7 +18,7 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { signUpFormSchema } from "@/schemas/sign-up-form-schema";
 import { signUp } from "@/services/authentication-service";
-import { saveValueToLocalStorage } from "@/services/local-storage-service";
+import { saveToLocalStorage, localStorageKeys } from "@/services/client-storage-service";
 
 export default function SignUp() {
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
@@ -41,7 +41,7 @@ export default function SignUp() {
     const { success, payload } = await signUp(signUpFormValues)
 
     if (success) {
-      saveValueToLocalStorage(process.env.NEXT_PUBLIC_API_HOST, payload)
+      saveToLocalStorage(localStorageKeys.token, payload)
       setIsRequestInProgress(false);
       NextResponse.redirect('/index')
     }

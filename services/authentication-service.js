@@ -1,5 +1,4 @@
 import { md5 } from "@/utils/md5";
-import { getValueFromLocalStorage } from "./local-storage-service";
 
 export async function signUp(user) {
   user.password = md5(user.password);
