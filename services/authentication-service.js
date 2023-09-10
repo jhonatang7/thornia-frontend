@@ -57,16 +57,11 @@ export async function signIn({ email, password }) {
         success: true,
         payload: responseBody.token,
       };
-    } else if (response.status === 403) {
-      return {
-        success: false,
-        payload: "Credenciales incorrectas"
-      }
     } else {
       return {
         success: false,
-        payload: "Ups! Ocurrió un error inesperado, inténtalo de nuevo",
-      };
+        payload: response.status
+      }
     }
   } catch (error) {
     console.log(error);

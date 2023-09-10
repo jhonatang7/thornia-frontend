@@ -13,16 +13,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast"
-import { NextResponse } from "next/server";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { signUpFormSchema } from "@/schemas/sign-up-form-schema";
 import { signUp } from "@/services/authentication-service";
 import { saveToLocalStorage, localStorageKeys } from "@/services/client-storage-service";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useAuth } from "@/components/auth-provider";
 
 export default function SignUp() {
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/home");
+    }
+  }, [isAuthenticated])
 
   const signUpForm = useForm({
     resolver: zodResolver(signUpFormSchema),
@@ -43,20 +53,20 @@ export default function SignUp() {
     if (success) {
       saveToLocalStorage(localStorageKeys.token, payload)
       setIsRequestInProgress(false);
-      NextResponse.redirect('/index')
+      router.push("/home");
     }
     else {
       setIsRequestInProgress(false);
       toast({
         variant: "destructive",
-        title: "Ups! Ocurrió un error inesperado, inténtalo de nuevo"
+        title: "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento"
       })
     }
   }
 
   return (
-    <div className="container mx-auto p-px md:p-4">
-      <Button variant="outline">
+    <main className="min-h-screen place-content-center">
+      <Button variant="outline" className="mt-4 ml-4 mb-4" onClick={() => router.back()}>
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver
       </Button>
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center mt-4 mb-1">
@@ -142,11 +152,11 @@ export default function SignUp() {
       </Form>
       <p className="text-center mt-2">
         ¿Ya tienes una cuenta?
-        <Button variant="link" className="p-1 font-bold">
-          Inicia sesión
-        </Button>
+        <Link href="/signin" passHref legacyBehavior>
+          <a className="text-base font-medium hover:underline ml-1">Inicia sesión</a>
+        </Link>
       </p>
       <Toaster />
-    </div>
+    </main>
   );
 }
