@@ -1,5 +1,5 @@
-import { verifyAuthentication } from "@/services/authentication-service";
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getFromLocalStorage } from "@/services/client-storage-service";
 
 export const AuthContext = createContext();
 
@@ -14,19 +14,27 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const [initializing, setInitializing] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isInitializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    let localToken = getValueFromLocalStorage(process.env.NEXT_PUBLIC_API_HOST);
+    let localToken = getFromLocalStorage(process.env.NEXT_PUBLIC_API_HOST);
     setIsAuthenticated(localToken != null);
 
     if (isAuthenticated) {
-      setToken(localToken);
+      setUser({ id: 'asdfghjkl' })
     }
 
     setInitializing(false);
   }, [])
+
+  const state = {
+    user,
+    isAuthenticated,
+    isInitializing
+  }
+
+  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>
 
 }

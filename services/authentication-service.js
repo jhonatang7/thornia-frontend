@@ -1,5 +1,4 @@
 import { md5 } from "@/utils/md5";
-import { getValueFromLocalStorage } from "./local-storage-service";
 
 export async function signUp(user) {
   user.password = md5(user.password);
@@ -58,16 +57,11 @@ export async function signIn({ email, password }) {
         success: true,
         payload: responseBody.token,
       };
-    } else if (response.status === 403) {
-      return {
-        success: false,
-        payload: "Credenciales incorrectas"
-      }
     } else {
       return {
         success: false,
-        payload: "Ups! Ocurrió un error inesperado, inténtalo de nuevo",
-      };
+        payload: response.status
+      }
     }
   } catch (error) {
     console.log(error);
