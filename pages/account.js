@@ -40,7 +40,7 @@ export function Account() {
             <DropdownMenuLabel>Foto de perfil</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Actualizar</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">
+            <DropdownMenuItem className="text-destructive focus:bg-destructive/30">
               Quitar
             </DropdownMenuItem>
           </DropdownMenuContent>
