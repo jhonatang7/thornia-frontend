@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { useAuth } from "@/components/auth-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { signInFormSchema } from "@/schemas/sign-in-form-schema";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -54,21 +54,27 @@ export default function SignIn() {
     } else {
       setIsRequestInProgress(false);
 
-      let message = "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
+      let message =
+        "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
       if (payload === 403) {
-        message = "Credenciales inválidas, verifica que el correo y contraseña que ingresaste son correctos";
+        message =
+          "Credenciales inválidas, verifica que el correo y contraseña que ingresaste son correctos";
       }
 
       toast({
         variant: "destructive",
-        title: message
+        title: message,
       });
     }
   }
 
   return (
     <main className="min-h-screen place-content-center">
-      <Button variant="outline" className="mt-4 ml-4 mb-4" onClick={() => router.back()}>
+      <Button
+        variant="outline"
+        className="mt-4 ml-4 mb-4"
+        onClick={() => router.back()}
+      >
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver
       </Button>
       <div className="mb-6 flex justify-center">
