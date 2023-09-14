@@ -59,10 +59,15 @@ export default function SignUp() {
       router.push("/home");
     } else {
       setIsRequestInProgress(false);
+
+      let message = "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
+      if (payload === 409) {
+        message = "El correo que ingresaste ya tiene un usuario asociado";
+      }
+
       toast({
         variant: "destructive",
-        title:
-          "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento",
+        title: message,
       });
     }
   }
