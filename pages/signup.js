@@ -12,12 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { signUpFormSchema } from "@/schemas/sign-up-form-schema";
 import { signUp } from "@/services/authentication-service";
-import { saveToLocalStorage, localStorageKeys } from "@/services/client-storage-service";
+import {
+  saveToLocalStorage,
+  localStorageKeys,
+} from "@/services/client-storage-service";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "@/components/auth-provider";
@@ -32,7 +35,7 @@ export default function SignUp() {
     if (isAuthenticated) {
       router.push("/home");
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   const signUpForm = useForm({
     resolver: zodResolver(signUpFormSchema),
@@ -48,25 +51,34 @@ export default function SignUp() {
   async function onSubmit(signUpFormValues) {
     setIsRequestInProgress(true);
     delete signUpFormValues.confirmPassword;
-    const { success, payload } = await signUp(signUpFormValues)
+    const { success, payload } = await signUp(signUpFormValues);
 
     if (success) {
-      saveToLocalStorage(localStorageKeys.token, payload)
+      saveToLocalStorage(localStorageKeys.token, payload);
       setIsRequestInProgress(false);
       router.push("/home");
-    }
-    else {
+    } else {
       setIsRequestInProgress(false);
+
+      let message = "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
+      if (payload === 409) {
+        message = "El correo que ingresaste ya tiene un usuario asociado";
+      }
+
       toast({
         variant: "destructive",
-        title: "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento"
-      })
+        title: message,
+      });
     }
   }
 
   return (
     <main className="min-h-screen place-content-center">
-      <Button variant="outline" className="mt-4 ml-4 mb-4" onClick={() => router.back()}>
+      <Button
+        variant="outline"
+        className="mt-4 ml-4 mb-4"
+        onClick={() => router.back()}
+      >
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver
       </Button>
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center mt-4 mb-1">
@@ -153,7 +165,9 @@ export default function SignUp() {
       <p className="text-center mt-2">
         ¿Ya tienes una cuenta?
         <Link href="/signin" passHref legacyBehavior>
-          <a className="text-base font-medium hover:underline ml-1">Inicia sesión</a>
+          <a className="text-base font-medium hover:underline ml-1">
+            Inicia sesión
+          </a>
         </Link>
       </p>
       <Toaster />
