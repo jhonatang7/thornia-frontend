@@ -28,7 +28,6 @@ export async function signUp(user) {
       };
     }
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       payload: error.message,
@@ -60,11 +59,10 @@ export async function signIn({ email, password }) {
     } else {
       return {
         success: false,
-        payload: response.status
-      }
+        payload: response.status,
+      };
     }
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       payload: error.message,

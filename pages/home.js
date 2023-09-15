@@ -18,4 +18,4 @@ export default function Home() {
   );
 }
 
-Home.requireAuth = false;
+Home.requireAuth = true;

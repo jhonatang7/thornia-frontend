@@ -19,16 +19,21 @@ import { signInFormSchema } from "@/schemas/sign-in-form-schema";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { signIn } from "@/services/authentication-service";
-import { saveToLocalStorage } from "@/services/client-storage-service";
+import {
+  localStorageKeys,
+  saveToLocalStorage,
+} from "@/services/client-storage-service";
 import { useRouter } from "next/router";
 
 export default function SignIn() {
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, verifyAuthentication } = useAuth();
 
   useEffect(() => {
+    console.log("USE EFFECT CALLED");
+    console.log(isAuthenticated);
     if (isAuthenticated) {
       router.push("/home");
     }
@@ -46,11 +51,12 @@ export default function SignIn() {
   async function onSubmit(signInFormValues) {
     setIsRequestInProgress(true);
     const { success, payload } = await signIn(signInFormValues);
+    console.log("REQUEST TO SIGN IN COMPLETED" + success);
 
     if (success) {
-      saveToLocalStorage(process.env.NEXT_PUBLIC_USER_TOKEN_KEY, payload);
+      saveToLocalStorage(localStorageKeys.token, payload);
+      await verifyAuthentication();
       setIsRequestInProgress(false);
-      router.push("/home");
     } else {
       setIsRequestInProgress(false);
 

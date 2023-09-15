@@ -29,7 +29,7 @@ export default function SignUp() {
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, verifyAuthentication } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -55,12 +55,13 @@ export default function SignUp() {
 
     if (success) {
       saveToLocalStorage(localStorageKeys.token, payload);
+      await verifyAuthentication();
       setIsRequestInProgress(false);
-      router.push("/home");
     } else {
       setIsRequestInProgress(false);
 
-      let message = "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
+      let message =
+        "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
       if (payload === 409) {
         message = "El correo que ingresaste ya tiene un usuario asociado";
       }
