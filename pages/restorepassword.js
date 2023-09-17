@@ -34,8 +34,10 @@ export default function RestorePassword() {
   });
 
   const onSubmit = async (restorePasswordValues) => {
+    console.log(query);
+    console.log(query.t);
     setIsRequestInProgress(true);
-    const { success, payload } = await restorePassword(
+    const { success } = await restorePassword(
       restorePasswordValues,
       query.t
     );
@@ -44,7 +46,7 @@ export default function RestorePassword() {
       setisRequestSuccess(true);
     } else {
       let message =
-        "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
+        "Ups! Ocurrió un error, verifica que tu enlace aun es vigente";
       toast({
         variant: "destructive",
         title: message,

@@ -60,8 +60,8 @@ export async function signIn({ email, password }) {
     } else {
       return {
         success: false,
-        payload: response.status
-      }
+        payload: response.status,
+      };
     }
   } catch (error) {
     console.log(error);
@@ -82,29 +82,19 @@ export async function restorePassword({ password }, token) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization" : "Bearer "+token,
+          Authorization: "Bearer " + token,
         },
         body: JSON.stringify({ password }),
       }
     );
-
-    if (response.ok) {
-      let responseBody = await response.json();
-      return {
-        success: true,
-        payload: responseBody.token,
-      };
-    } else {
-      return {
-        success: false,
-        payload: response.status
-      }
-    }
+    
+    return {
+      success: response.ok,
+    };
   } catch (error) {
     console.log(error);
     return {
       success: false,
-      payload: error.message,
     };
   }
 }

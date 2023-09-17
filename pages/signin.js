@@ -19,7 +19,7 @@ import { signInFormSchema } from "@/schemas/sign-in-form-schema";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { signIn } from "@/services/authentication-service";
-import { saveToLocalStorage } from "@/services/client-storage-service";
+import { saveToLocalStorage, localStorageKeys } from "@/services/client-storage-service";
 import { useRouter } from "next/router";
 
 export default function SignIn() {
@@ -48,7 +48,7 @@ export default function SignIn() {
     const { success, payload } = await signIn(signInFormValues);
 
     if (success) {
-      saveToLocalStorage(process.env.NEXT_PUBLIC_USER_TOKEN_KEY, payload);
+      saveToLocalStorage(localStorageKeys.token, payload);
       setIsRequestInProgress(false);
       router.push("/home");
     } else {

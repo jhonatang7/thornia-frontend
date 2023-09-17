@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getFromLocalStorage } from "@/services/client-storage-service";
+import { getFromLocalStorage, localStorageKeys } from "@/services/client-storage-service";
 
 export const AuthContext = createContext();
 
@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    let localToken = getFromLocalStorage(process.env.NEXT_PUBLIC_API_HOST);
+    let localToken = getFromLocalStorage(localStorageKeys.token);
     setIsAuthenticated(localToken != null);
 
     if (isAuthenticated) {
