@@ -5,6 +5,7 @@ import {
   removeFromLocalStorage,
 } from "@/services/client-storage-service";
 import { getUser } from "@/services/account-service";
+import { isEmpty } from "@/utils/is-empty";
 
 export const AuthContext = createContext();
 
@@ -25,20 +26,20 @@ export function AuthProvider({ children }) {
 
   const updateUser = async () => {
     let userUpdated = await getUser();
-    console.log(userUpdated);
     setUser(userUpdated);
-    console.log(user);
+    return userUpdated;
   };
 
   const verifyAuthentication = async () => {
     let localToken = getFromLocalStorage(localStorageKeys.token);
     let tokenExists = localToken != null;
+    let userUpdated = {};
 
     if (tokenExists) {
-      await updateUser();
+      userUpdated = await updateUser();
     }
 
-    setIsAuthenticated(tokenExists);
+    setIsAuthenticated(!isEmpty(user));
   };
 
   const logOut = () => {

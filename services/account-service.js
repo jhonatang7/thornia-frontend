@@ -4,23 +4,26 @@ import {
 } from "./client-storage-service";
 
 export async function getUser() {
-  //   try {
-  let response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users/me`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${getFromLocalStorage(localStorageKeys.token)}`,
-    },
-  });
+  try {
+    let response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/users/me`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getFromLocalStorage(localStorageKeys.token)}`,
+      },
+    });
 
-  if (response.ok) {
-    let user = await response.json();
-    delete user.password;
-    delete user.authorities;
-    delete user.username;
-    return user;
+    if (response.ok) {
+      let user = await response.json();
+      delete user.password;
+      delete user.authorities;
+      delete user.username;
+      return user;
+    } else {
+      return {};
+    }
+  } catch (error) {
+    return {};
   }
-
-  //   } catch (error) {}
 }
 
 export async function updateUserName(user, newName) {
