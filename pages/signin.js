@@ -14,21 +14,26 @@ import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { useAuth } from "@/components/auth-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { signInFormSchema } from "@/schemas/sign-in-form-schema";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { signIn } from "@/services/authentication-service";
-import { saveToLocalStorage } from "@/services/client-storage-service";
+import {
+  localStorageKeys,
+  saveToLocalStorage,
+} from "@/services/client-storage-service";
 import { useRouter } from "next/router";
 
 export default function SignIn() {
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, verifyAuthentication } = useAuth();
 
   useEffect(() => {
+    console.log("USE EFFECT CALLED");
+    console.log(isAuthenticated);
     if (isAuthenticated) {
       router.push("/home");
     }
@@ -46,29 +51,36 @@ export default function SignIn() {
   async function onSubmit(signInFormValues) {
     setIsRequestInProgress(true);
     const { success, payload } = await signIn(signInFormValues);
+    console.log("REQUEST TO SIGN IN COMPLETED" + success);
 
     if (success) {
-      saveToLocalStorage(process.env.NEXT_PUBLIC_USER_TOKEN_KEY, payload);
+      saveToLocalStorage(localStorageKeys.token, payload);
+      await verifyAuthentication();
       setIsRequestInProgress(false);
-      router.push("/home");
     } else {
       setIsRequestInProgress(false);
 
-      let message = "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
+      let message =
+        "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
       if (payload === 403) {
-        message = "Credenciales inválidas, verifica que el correo y contraseña que ingresaste son correctos";
+        message =
+          "Credenciales inválidas, verifica que el correo y contraseña que ingresaste son correctos";
       }
 
       toast({
         variant: "destructive",
-        title: message
+        title: message,
       });
     }
   }
 
   return (
     <main className="min-h-screen place-content-center">
-      <Button variant="outline" className="mt-4 ml-4 mb-4" onClick={() => router.back()}>
+      <Button
+        variant="outline"
+        className="mt-4 ml-4 mb-4"
+        onClick={() => router.back()}
+      >
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver
       </Button>
       <div className="mb-6 flex justify-center">
