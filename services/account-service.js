@@ -24,17 +24,25 @@ export async function getUser() {
 }
 
 export async function updateUserName(user, newName) {
-  //   try {
-  let response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_HOST}/users/update/name`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getFromLocalStorage(localStorageKeys.token)}`,
-      },
-      body: JSON.stringify({ id: user.id, name: newName }),
-    }
-  );
-  //   } catch (error) {}
+  let successfullyUpdated;
+  try {
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/users/update/name`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify({ id: user.id, name: newName }),
+      }
+    );
+    successfullyUpdated = response.ok;
+  } catch (error) {
+    successfullyUpdated = false;
+  } finally {
+    return successfullyUpdated;
+  }
 }

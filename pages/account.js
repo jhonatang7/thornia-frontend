@@ -51,29 +51,6 @@ export function Account() {
         </DropdownMenu>
       </div>
 
-      {/* <div className="grid max-w-md w-full items-center gap-1.5">
-        <Label htmlFor="name">Nombre</Label>
-        <div className="flex items-center space-x-2">
-          <Input
-            type="text"
-            id="name"
-            disabled={nameStatus != "editing"}
-            value={userName}
-          />
-          <Button
-            type="submit"
-            variant="ghost"
-            onClick={onNameFieldButtonClick}
-            disabled={nameStatus === "updating"}
-          >
-            {nameStatus === "updating" && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            {nameStatus === "disabled" && <span>Editar</span>}
-            {nameStatus === "editing" && <span>Guardar</span>}
-          </Button>
-        </div>
-      </div> */}
       <AccountNameField />
       <div className="grid max-w-md w-full items-center gap-1.5">
         <Label htmlFor="email">Correo electrónico</Label>

@@ -16,10 +16,12 @@ import { AccountNameFieldSchema } from "@/schemas/account-name-field-schema";
 import { useAuth } from "../providers/auth-provider";
 import { useState, useEffect } from "react";
 import { updateUserName } from "@/services/account-service";
+import { useToast } from "@/components/ui/use-toast";
 
 export function AccountNameField() {
   const { user, updateUser } = useAuth();
   const [nameStatus, setNameStatus] = useState("disabled");
+  const { toast } = useToast();
 
   const form = useForm({
     resolver: zodResolver(AccountNameFieldSchema),
@@ -40,17 +42,32 @@ export function AccountNameField() {
       setNameStatus("editing");
     } else if (nameStatus === "editing") {
       setNameStatus("updating");
-      console.log(user);
-      await updateUserName(user, data.name);
-      await updateUser();
-      console.log(user);
+      let successfullyUpdated = await updateUserName(user, data.name);
+
+      if (successfullyUpdated) {
+        await updateUser();
+      } else {
+        form.reset({
+          name: user.name,
+        });
+
+        toast({
+          variant: "destructive",
+          title: "Ocurrió un error al actualizar tu nombre",
+          description: "Por favor vuelve a intentarlo más tarde.",
+        });
+      }
+
       setNameStatus("disabled");
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="max-w-md w-full space-y-6"
+      >
         <FormField
           control={form.control}
           name="name"

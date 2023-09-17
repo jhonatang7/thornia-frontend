@@ -2,6 +2,7 @@ import { Navbar } from "@/components/navbar";
 import { createContext, useState } from "react";
 import { Projects } from "./projects";
 import { Account } from "./account";
+import { Toaster } from "@/components/ui/toaster";
 
 export const HomeNavigationContext = createContext();
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
         {currentPage === "projects" && <Projects />}
         {currentPage === "account" && <Account />}
       </div>
+      <Toaster />
     </HomeNavigationContext.Provider>
   );
 }
