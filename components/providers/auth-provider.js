@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
       userUpdated = await updateUser();
     }
 
-    setIsAuthenticated(!isEmpty(user));
+    setIsAuthenticated(!isEmpty(userUpdated));
   };
 
   const logOut = () => {

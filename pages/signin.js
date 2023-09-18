@@ -124,7 +124,7 @@ export default function SignIn() {
             )}
           />
           <div className="flex mb-4 justify-end">
-            <Link href="/" passHref legacyBehavior>
+            <Link href="/restorepassword" passHref legacyBehavior>
               <a className="text-sm mt-1 font-medium hover:underline">
                 ¿Olvidaste tu contraseña?
               </a>

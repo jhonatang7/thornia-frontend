@@ -1,6 +1,14 @@
 import * as zod from "zod";
 
-export const restorePasswordFormSchema = zod
+export const restorePasswordSchema = zod
+.object({
+  email: zod
+      .string({ required_error: "Introduce tu correo" })
+      .email({ message: "Ingresa un correo válido" }),
+})
+.required();
+
+export const updateForgottenPasswordFormSchema = zod
   .object({
     password: zod
       .string({ required_error: "Introduce tu nueva contraseña" })
