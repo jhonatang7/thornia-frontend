@@ -37,7 +37,6 @@ export async function signUp(user) {
 
 export async function signIn({ email, password }) {
   password = md5(password);
-
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_HOST}/users/signin`,
@@ -66,6 +65,57 @@ export async function signIn({ email, password }) {
     return {
       success: false,
       payload: error.message,
+    };
+  }
+}
+
+export async function updateForgottenPassword({ password }, token) {
+  password = md5(password);
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/users/update/forgottenpassword`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ password }),
+      }
+    );
+
+    return {
+      success: response.ok,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+    };
+  }
+}
+
+export async function restorePassword({ email }) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/users/restorepassword`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    );
+
+    return {
+      success: response.ok,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
     };
   }
 }
