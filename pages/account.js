@@ -18,7 +18,7 @@ export function Account() {
   const { logOut } = useAuth();
 
   return (
-    <div className="flex flex-col justify-center items-center p-8 space-y-4">
+    <div className="flex flex-col justify-center items-center p-8 space-y-6">
       <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
         Información de tu cuenta
       </h2>
@@ -52,15 +52,6 @@ export function Account() {
       </div>
 
       <AccountNameField />
-      <div className="grid max-w-md w-full items-center gap-1.5">
-        <Label htmlFor="email">Correo electrónico</Label>
-        <div className="flex items-center space-x-2">
-          <Input type="email" id="email" disabled={true} />
-          <Button type="submit" variant="ghost">
-            Editar
-          </Button>
-        </div>
-      </div>
       <Button type="submit" variant="outline" className="max-w-md w-full">
         Cambiar contraseña
       </Button>

@@ -62,7 +62,7 @@ export default function SignIn() {
 
       let message =
         "Ups! Ocurrió un error inesperado, inténtalo de nuevo dentro de un momento";
-      if (payload === 403) {
+      if (payload === 401) {
         message =
           "Credenciales inválidas, verifica que el correo y contraseña que ingresaste son correctos";
       }

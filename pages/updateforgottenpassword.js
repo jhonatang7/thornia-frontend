@@ -6,6 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,13 +55,19 @@ export default function UpdateForgottenPassword() {
 
   return (
     <main className="flex justify-center items-center h-screen">
-      <div className="border border-gray-300 p-4 m-4 rounded-lg min-w-min max-w-lg w-full">
+      <div className="border border-gray-300 p-8 pt-7 rounded-xl min-w-min max-w-lg w-full">
         {isRequestSuccess ? (
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors text-center first:mt-0">
-            La contraseña se actualizo con éxito!
-            <br />
-            Inicie sesión para continuar
-          </h2>
+          <>
+            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors text-center first:mt-0">
+              ¡Tu contraseña se actualizó exitosamente!
+            </h2>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-center mt-4">
+              <Link href="/signin" passHref legacyBehavior>
+                <a className="font-bold underline mr-1.5">Inicia sesión</a>
+              </Link>
+              en Thornia para continuar
+            </h4>
+          </>
         ) : (
           <>
             <h2 className="scroll-m-20 pb-9 text-3xl font-semibold tracking-tight transition-colors text-center first:mt-0">
@@ -69,7 +76,7 @@ export default function UpdateForgottenPassword() {
             <Form {...updateForgottenPasswordForm}>
               <form
                 onSubmit={updateForgottenPasswordForm.handleSubmit(onSubmit)}
-                className="mb-2 container max-w-md"
+                className="w-full"
               >
                 <FormField
                   control={updateForgottenPasswordForm.control}
@@ -105,7 +112,11 @@ export default function UpdateForgottenPassword() {
                     </FormItem>
                   )}
                 />
-                <Button className="w-full" type="submit">
+                <Button
+                  className="w-full"
+                  type="submit"
+                  disabled={isRequestInProgress}
+                >
                   {isRequestInProgress && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
