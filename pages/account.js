@@ -13,9 +13,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AccountNameField } from "@/components/account/account-name-field";
 import { useAuth } from "@/components/providers/auth-provider";
+import { useRef, useState } from "react";
 
 export function Account() {
   const { logOut } = useAuth();
+  const [isUploading, setIsUploading] = useState(false);
+  const [selectImageName, setSelectImageName] = useState("");
+  const [selectedFile, setselectedFile] = useState();
+  const imageInputRef = useRef(null);
+
+  const handleUploadImage = async () => {
+    imageInputRef.current.click();
+  };
+
+  const setTargetImage = ({ target }) => {
+    if (target.files) {
+      const fileProfileImage = target.files[0];
+      setSelectImageName(URL.createObjectURL(fileProfileImage));
+      setselectedFile(fileProfileImage);
+      //LOGICA PARA SUBIR
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center p-8 space-y-6">
@@ -43,7 +61,15 @@ export function Account() {
           <DropdownMenuContent>
             <DropdownMenuLabel>Foto de perfil</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Actualizar</DropdownMenuItem>
+            <Input
+              type="file"
+              ref={imageInputRef}
+              hidden
+              onChange={setTargetImage}
+            />
+            <DropdownMenuItem onSelect={handleUploadImage}>
+              Actualizar
+            </DropdownMenuItem>
             <DropdownMenuItem className="text-destructive focus:bg-destructive/30">
               Quitar
             </DropdownMenuItem>

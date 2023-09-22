@@ -49,3 +49,29 @@ export async function updateUserName(user, newName) {
     return successfullyUpdated;
   }
 }
+
+export async function updateProfileImage(profileImage) {
+  let successfullyUpdated;
+  try {
+    const formData = new FormData();
+    formData.append('profileImage',profileImage);
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST} + /update/profileimage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: formData,
+      }
+    );
+    successfullyUpdated = response.ok;
+  } catch (error) {
+    successfullyUpdated = false;
+  } finally {
+    return successfullyUpdated;
+  }
+}
