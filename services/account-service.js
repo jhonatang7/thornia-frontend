@@ -56,11 +56,10 @@ export async function updateProfileImage(profileImage) {
     const formData = new FormData();
     formData.append('profileImage',profileImage);
     let response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_HOST} + /update/profileimage`,
+      `${process.env.NEXT_PUBLIC_API_HOST}/users/update/profileimage`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${getFromLocalStorage(
             localStorageKeys.token
           )}`,
