@@ -13,7 +13,10 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { md5 } from "@/utils/md5";
-import { updateProfileImage } from "@/services/account-service";
+import {
+  updateProfileImage,
+  deleteProfileImage,
+} from "@/services/account-service";
 
 export function AccountProfileImage() {
   const { user, updateUser } = useAuth();
@@ -54,13 +57,26 @@ export function AccountProfileImage() {
       if (successfullyUpdated) {
         await updateUser();
       } else {
-        console.log("Nop");
         toast({
           variant: "destructive",
           title: "Ocurrió un error al actualizar la imagen",
           description: "Por favor vuelve a intentarlo más tarde.",
         });
       }
+    }
+    setisLoading(false);
+  };
+  const removeProfileImage = async () => {
+    setisLoading(true);
+    let successfullyUpdated = await deleteProfileImage();
+    if (successfullyUpdated) {
+      await updateUser();
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Ocurrió un error al quitar la imagen",
+        description: "Por favor vuelve a intentarlo más tarde.",
+      });
     }
     setisLoading(false);
   };
@@ -84,13 +100,19 @@ export function AccountProfileImage() {
         <DropdownMenuContent>
           <DropdownMenuLabel>Foto de perfil</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <input type="file" hidden ref={imageInputRef} onChangeCapture={setTargetImage} />
+          <input
+            type="file"
+            hidden
+            ref={imageInputRef}
+            onChangeCapture={setTargetImage}
+          />
           <DropdownMenuItem onSelect={handleUploadImage} disabled={isLoading}>
             Actualizar
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-destructive focus:bg-destructive/30"
             disabled={isLoading}
+            onSelect={removeProfileImage}
           >
             Quitar
           </DropdownMenuItem>
