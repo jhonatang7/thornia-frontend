@@ -42,7 +42,16 @@ export async function updateUserName(newName) {
         body: JSON.stringify({ name: newName }),
       }
     );
-    successfullyUpdated = response.ok;
+    if (response.ok) {
+      return {
+        successfullyUpdated: true,
+      };
+    } else {
+      return {
+        successfullyUpdated: false,
+        payload: response.status,
+      };
+    }
   } catch (error) {
     successfullyUpdated = false;
   } finally {

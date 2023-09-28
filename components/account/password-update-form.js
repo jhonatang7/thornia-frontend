@@ -14,6 +14,7 @@ import { UpdatePasswordFormSchema } from "@/schemas/update-password-schema";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { updatePassword } from "@/services/account-service";
 
 export function PasswordUpdateForm() {
   const [formStatus, setFormStatus] = useState("disabled");
@@ -29,7 +30,34 @@ export function PasswordUpdateForm() {
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async (data) => {
+    setFormStatus("updating");
+    let { successfullyUpdated, payload } = await updatePassword(
+      data.currentPassword,
+      data.newPassword
+    );
+    if (successfullyUpdated) {
+      toast({
+        title: "✅",
+        description: "¡Tu contraseña ha sido actualizada exitosamente!",
+      });
+    } else {
+      form.reset();
+      let message;
+      if (payload === 401) {
+        message = "Tu contraseña actual es incorrecta";
+      } else {
+        message = "Ocurrió un error inesperado al actualizar tu contraseña";
+      }
+
+      toast({
+        variant: "destructive",
+        title: message,
+        description: "Por favor vuelve a intentarlo más tarde.",
+      });
+    }
+    setFormStatus("disabled");
+  };
 
   return (
     <>
@@ -46,7 +74,11 @@ export function PasswordUpdateForm() {
                 <FormItem>
                   <FormLabel>Contraseña actual</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={formStatus !== "editing"} />
+                    <Input
+                      {...field}
+                      disabled={formStatus !== "editing"}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -59,7 +91,11 @@ export function PasswordUpdateForm() {
                 <FormItem>
                   <FormLabel>Nueva contraseña</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={formStatus !== "editing"} />
+                    <Input
+                      {...field}
+                      disabled={formStatus !== "editing"}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,7 +108,11 @@ export function PasswordUpdateForm() {
                 <FormItem>
                   <FormLabel>Confirmar nueva contraseña</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={formStatus !== "editing"} />
+                    <Input
+                      {...field}
+                      disabled={formStatus !== "editing"}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

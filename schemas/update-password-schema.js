@@ -2,9 +2,11 @@ import * as zod from "zod";
 
 export const UpdatePasswordFormSchema = zod
   .object({
-    currentPassword: zod.string({
-      required_error: "Introduce tu contraseña actual",
-    }),
+    currentPassword: zod
+      .string({
+        required_error: "Introduce tu contraseña actual",
+      })
+      .min(1, { message: "Introduce tu contraseña actual" }),
     password: zod
       .string({ required_error: "Introduce tu nueva contraseña" })
       .regex(/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/, {
