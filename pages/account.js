@@ -1,5 +1,3 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pencil } from "lucide-react";
@@ -13,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AccountNameField } from "@/components/account/account-name-field";
 import { useAuth } from "@/components/providers/auth-provider";
+import { PasswordUpdateForm } from "@/components/account/password-update-form";
 
 export function Account() {
   const { logOut } = useAuth();
@@ -52,9 +51,7 @@ export function Account() {
       </div>
 
       <AccountNameField />
-      <Button type="submit" variant="outline" className="max-w-md w-full">
-        Cambiar contraseña
-      </Button>
+      <PasswordUpdateForm />
       <Button
         type="submit"
         variant="destructiveOutline"

@@ -42,7 +42,7 @@ export function AccountNameField() {
       setNameStatus("editing");
     } else if (nameStatus === "editing") {
       setNameStatus("updating");
-      let successfullyUpdated = await updateUserName(user, data.name);
+      let successfullyUpdated = await updateUserName(data.name);
 
       if (successfullyUpdated) {
         await updateUser();
