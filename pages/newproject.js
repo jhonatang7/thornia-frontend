@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { ProyectInitial } from "@/components/new-proyect/proyect-initial";
+import { ProjectInitial } from "@/components/new-project/project-initial";
 
 export default function NewProject() {
   return (
@@ -19,8 +19,8 @@ export default function NewProject() {
         </h1>
         <div className="basis-[10%]" />
       </div>
-      <div className="flex justify-center ">
-        <ProyectInitial />
+      <div className="flex justify-center w-full ">
+        <ProjectInitial />
       </div>
     </main>
   );
