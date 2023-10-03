@@ -27,13 +27,13 @@ export function AccountNameField() {
     resolver: zodResolver(AccountNameFieldSchema),
     mode: "onChange",
     defaultValues: {
-      name: user.name,
+      fullName: user.fullName,
     },
   });
 
   useEffect(() => {
     form.reset({
-      name: user.name,
+      fullName: user.fullName,
     });
   }, [user]);
 
@@ -42,13 +42,13 @@ export function AccountNameField() {
       setNameStatus("editing");
     } else if (nameStatus === "editing") {
       setNameStatus("updating");
-      let successfullyUpdated = await updateUserName(data.name);
+      let successfullyUpdated = await updateUserName(data.fullName);
 
       if (successfullyUpdated) {
         await updateUser();
       } else {
         form.reset({
-          name: user.name,
+          fullName: user.fullName,
         });
 
         toast({
@@ -70,7 +70,7 @@ export function AccountNameField() {
       >
         <FormField
           control={form.control}
-          name="name"
+          name="fullName"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nombre</FormLabel>

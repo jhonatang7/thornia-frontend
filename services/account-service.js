@@ -2,6 +2,7 @@ import {
   getFromLocalStorage,
   localStorageKeys,
 } from "./client-storage-service";
+import { md5 } from "@/utils/md5";
 
 export async function getUser() {
   try {
@@ -39,9 +40,36 @@ export async function updateUserName(newName) {
             localStorageKeys.token
           )}`,
         },
-        body: JSON.stringify({ name: newName }),
+        body: JSON.stringify({ fullName: newName }),
       }
     );
+    successfullyUpdated = response.ok;
+  } catch (error) {
+    successfullyUpdated = false;
+  } finally {
+    return successfullyUpdated;
+  }
+}
+
+export async function updatePassword(currentPassword, newPassword) {
+  try {
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/users/update/password`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify({
+          currentPassword: md5(currentPassword),
+          newPassword: md5(newPassword),
+        }),
+      }
+    );
+    console.log(response);
     if (response.ok) {
       return {
         successfullyUpdated: true,
@@ -53,36 +81,9 @@ export async function updateUserName(newName) {
       };
     }
   } catch (error) {
-    successfullyUpdated = false;
-  } finally {
-    return successfullyUpdated;
-  }
-}
-
-export async function updatePassword(currentPassword, newPassword) {
-  let successfullyUpdated;
-  try {
-    let response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_HOST}/users/update/name`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getFromLocalStorage(
-            localStorageKeys.token
-          )}`,
-        },
-        body: JSON.stringify({
-          currentPassword: currentPassword,
-          newPassword: newPassword,
-        }),
-      }
-    );
-    successfullyUpdated = response.ok;
-  } catch (error) {
-    successfullyUpdated = false;
-  } finally {
-    return successfullyUpdated;
+    return {
+      successfullyUpdated: false,
+    };
   }
 }
 

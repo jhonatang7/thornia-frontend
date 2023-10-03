@@ -34,29 +34,33 @@ export function PasswordUpdateForm() {
     setFormStatus("updating");
     let { successfullyUpdated, payload } = await updatePassword(
       data.currentPassword,
-      data.newPassword
+      data.password
     );
+    setFormStatus("disabled");
+
     if (successfullyUpdated) {
       toast({
         title: "✅",
         description: "¡Tu contraseña ha sido actualizada exitosamente!",
       });
-    } else {
-      form.reset();
-      let message;
-      if (payload === 401) {
-        message = "Tu contraseña actual es incorrecta";
-      } else {
-        message = "Ocurrió un error inesperado al actualizar tu contraseña";
-      }
+      return;
+    }
 
+    form.reset();
+    if (payload === 401) {
       toast({
         variant: "destructive",
-        title: message,
-        description: "Por favor vuelve a intentarlo más tarde.",
+        title: "Tu contraseña actual es incorrecta",
+        description: "Verifica tu contraseña y vuelve a intentarlo",
       });
+      return;
     }
-    setFormStatus("disabled");
+
+    toast({
+      variant: "destructive",
+      title: "Ocurrió un error inesperado al actualizar tu contraseña",
+      description: "Por favor vuelve a intentarlo más tarde",
+    });
   };
 
   return (

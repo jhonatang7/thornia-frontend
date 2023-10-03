@@ -2,7 +2,7 @@ import * as zod from "zod";
 
 export const signUpFormSchema = zod
   .object({
-    name: zod
+    fullName: zod
       .string({ required_error: "Introduce tu nombre" })
       .min(3, { message: "Debe tener al menos 3 caracteres" })
       .max(50, { message: "No debe pasar de 50 caracteres" }),
