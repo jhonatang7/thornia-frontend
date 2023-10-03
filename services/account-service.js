@@ -2,6 +2,7 @@ import {
   getFromLocalStorage,
   localStorageKeys,
 } from "./client-storage-service";
+import { md5 } from "@/utils/md5";
 
 export async function getUser() {
   try {
@@ -26,20 +27,20 @@ export async function getUser() {
   }
 }
 
-export async function updateUserName(user, newName) {
+export async function updateUserName(newName) {
   let successfullyUpdated;
   try {
     let response = await fetch(
       `${process.env.NEXT_PUBLIC_API_HOST}/users/update/name`,
       {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getFromLocalStorage(
             localStorageKeys.token
           )}`,
         },
-        body: JSON.stringify({ id: user.id, name: newName }),
+        body: JSON.stringify({ fullName: newName }),
       }
     );
     successfullyUpdated = response.ok;
@@ -47,6 +48,42 @@ export async function updateUserName(user, newName) {
     successfullyUpdated = false;
   } finally {
     return successfullyUpdated;
+  }
+}
+
+export async function updatePassword(currentPassword, newPassword) {
+  try {
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/users/update/password`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify({
+          currentPassword: md5(currentPassword),
+          newPassword: md5(newPassword),
+        }),
+      }
+    );
+    console.log(response);
+    if (response.ok) {
+      return {
+        successfullyUpdated: true,
+      };
+    } else {
+      return {
+        successfullyUpdated: false,
+        payload: response.status,
+      };
+    }
+  } catch (error) {
+    return {
+      successfullyUpdated: false,
+    };
   }
 }
 
