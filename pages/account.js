@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { AccountNameField } from "@/components/account/account-name-field";
 import { useAuth } from "@/components/providers/auth-provider";
+import { PasswordUpdateForm } from "@/components/account/password-update-form";
 import { AccountProfileImage } from "@/components/account/account-profile-image";
 
 export function Account() {
@@ -14,9 +15,7 @@ export function Account() {
 
       <AccountProfileImage />
       <AccountNameField />
-      <Button type="submit" variant="outline" className="max-w-md w-full">
-        Cambiar contraseña
-      </Button>
+      <PasswordUpdateForm />
       <Button
         type="submit"
         variant="destructiveOutline"

@@ -41,7 +41,7 @@ export default function SignUp() {
     resolver: zodResolver(signUpFormSchema),
     mode: "onChange",
     defaultValues: {
-      name: "",
+      fullName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -96,7 +96,7 @@ export default function SignUp() {
         >
           <FormField
             control={signUpForm.control}
-            name="name"
+            name="fullName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Nombre</FormLabel>

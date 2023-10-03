@@ -1,16 +1,14 @@
 import * as zod from "zod";
 
-export const signUpFormSchema = zod
+export const UpdatePasswordFormSchema = zod
   .object({
-    fullName: zod
-      .string({ required_error: "Introduce tu nombre" })
-      .min(3, { message: "Debe tener al menos 3 caracteres" })
-      .max(50, { message: "No debe pasar de 50 caracteres" }),
-    email: zod
-      .string({ required_error: "Introduce tu correo" })
-      .email({ message: "Ingresa un correo válido" }),
+    currentPassword: zod
+      .string({
+        required_error: "Introduce tu contraseña actual",
+      })
+      .min(1, { message: "Introduce tu contraseña actual" }),
     password: zod
-      .string({ required_error: "Introduce una contraseña" })
+      .string({ required_error: "Introduce tu nueva contraseña" })
       .regex(/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/, {
         message:
           "Debe tener al menos 6 caracteres, una letra, un dígito, un caracter especial",
