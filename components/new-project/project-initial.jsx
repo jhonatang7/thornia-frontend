@@ -28,9 +28,9 @@ export function ProjectInitial({ setStep, projectData, setProjectData }) {
   };
   return (
     <div className="grow flex flex-col max-w-sm">
-      <h3 className="flex-none mb-6 scroll-m-20 text-2xl font-semibold tracking-tight">
+      <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
         Inicia tu proyecto
-      </h3>
+      </h2>
       {
         <Form {...formProjectInitial}>
           <form
