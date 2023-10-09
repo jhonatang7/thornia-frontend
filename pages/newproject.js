@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ProjectInitial } from "@/components/new-project/project-initial";
+import { IntroductionStatesMaps } from "@/components/new-project/introduction-states-maps";
 import { useEffect, useState } from "react";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
   const [projectData, setProjectData] = useState({});
   const componentsDictionary = [
+    <IntroductionStatesMaps/>,
     <ProjectInitial
       setStep={setStep}
       projectData={projectData}
