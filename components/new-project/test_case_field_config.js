@@ -21,19 +21,38 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
+import { useEffect } from "react";
 
-export function TestCaseFieldConfig({ index, field }) {
+export function TestCaseFieldConfig({
+  index,
+  field,
+  removeField,
+  updateField,
+}) {
   const form = useForm({
     resolver: zodResolver(ArtifactConfigFieldsSchema),
     mode: "onChange",
     defaultValues: field,
   });
 
+  // useEffect(() => {
+  // console.log("USE EFFECT VALORES FORM");
+  // console.log(form.getValues());
+  // if (form.formState.isValid) {
+  // updateField(index, form.getValues());
+  // }
+  // }, [form.watch("key"), form.watch("type"), form.watch("options")]);
+
+  // useEffect(() => {
+  // form.reset(field);
+  // }, [field]);
+
   return (
-    <TableRow key={"field-" + index}>
-      <TableCell className="font-medium">
+    <TableRow>
+      <TableCell>{index}</TableCell>
+      <TableCell className="font-medium p-2">
         <Form {...form}>
-          <form className="flex flex-row space-x-4">
+          <form className="flex flex-row space-x-5">
             <FormField
               control={form.control}
               name="key"
@@ -58,7 +77,11 @@ export function TestCaseFieldConfig({ index, field }) {
               name="type"
               render={({ field: formField }) => (
                 <FormItem>
-                  <Select value={field.type} disabled={field.required}>
+                  <Select
+                    disabled={field.required}
+                    onValueChange={formField.onChange}
+                    value={formField.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Tipo de dato" />
@@ -74,7 +97,7 @@ export function TestCaseFieldConfig({ index, field }) {
                 </FormItem>
               )}
             ></FormField>
-            {field.options ? (
+            {form.watch("type") === "selection" ? (
               <FormField
                 control={form.control}
                 name="options"
@@ -98,8 +121,16 @@ export function TestCaseFieldConfig({ index, field }) {
           </form>
         </Form>
       </TableCell>
-      <TableCell>
-        <Button variant="outline" size="icon" disabled={field.required}>
+      <TableCell className="p-2">
+        <Button
+          variant="outline"
+          size="icon"
+          disabled={field.required}
+          onClick={() => {
+            removeField();
+            // form.reset();
+          }}
+        >
           <Trash2 className="h-4 w-4" />
         </Button>
       </TableCell>
