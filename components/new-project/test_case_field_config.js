@@ -29,6 +29,7 @@ export function TestCaseFieldConfig({
   removeField,
   updateField,
 }) {
+  console.log(field);
   const form = useForm({
     resolver: zodResolver(ArtifactConfigFieldsSchema),
     mode: "onChange",
@@ -43,9 +44,9 @@ export function TestCaseFieldConfig({
   // }
   // }, [form.watch("key"), form.watch("type"), form.watch("options")]);
 
-  // useEffect(() => {
-  // form.reset(field);
-  // }, [field]);
+  useEffect(() => {
+    form.reset(field);
+  }, [field]);
 
   return (
     <TableRow>
@@ -127,8 +128,8 @@ export function TestCaseFieldConfig({
           size="icon"
           disabled={field.required}
           onClick={() => {
+            updateField(index, form.getValues());
             removeField();
-            // form.reset();
           }}
         >
           <Trash2 className="h-4 w-4" />

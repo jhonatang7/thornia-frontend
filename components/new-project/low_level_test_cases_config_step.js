@@ -16,61 +16,67 @@ import { Plus } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export function LowLevelTestCasesConfigStep() {
+  // let [increment, setIncrement] = useState(4);
   const [fields, setFields] = useState([
     {
+      // id: 0,
       key: "Título",
       type: "text",
       required: true,
     },
     {
+      // id: 1,
       key: "Estado",
       type: "selection",
       required: true,
       options: ["Por hacer", "En progreso", "Completo"],
     },
     {
+      // id: 2,
       key: "Prioridad",
       type: "selection",
       required: false,
       options: ["Alta", "Media", "Baja"],
     },
-
     {
+      // id: 3,
       key: "Responsable",
       type: "member",
       required: false,
     },
-    ,
     {
+      // id: 4,
       key: "Descripción",
       type: "text",
       required: false,
     },
   ]);
 
-  useEffect(() => {
-    console.log(fields);
-  }, [fields]);
+  // useEffect(() => {
+  //   console.log(fields);
+  // }, [fields]);
 
   const addField = () => {
-    let newFields = [
+    // setIncrement(increment++);
+    setFields([
       ...fields,
       {
+        // id: increment,
         key: "",
         type: "text",
         required: false,
       },
-    ];
-    setFields(newFields);
+    ]);
   };
 
   const removeField = (index) => {
-    console.log(index);
+    //console.log(index);
     let newFields = [...fields];
-    let removedFields = newFields.splice(index, 1);
-    console.log(removedFields);
-    console.log(newFields);
+    newFields.splice(index, 1);
     setFields(newFields);
+    //console.log(removedFields);
+    //console.log(newFields);
+    // setFields(fields.filter((a) => a.id !== index + 1));
   };
 
   const updateField = (index, field) => {
@@ -80,18 +86,6 @@ export function LowLevelTestCasesConfigStep() {
     console.log(newFields);
     setFields(newFields);
   };
-
-  const [elements, setElements] = useState(
-    fields.map((field, index) => (
-      <TestCaseFieldConfig
-        field={field}
-        index={index}
-        removeField={() => removeField(index)}
-        updateField={updateField}
-        key={"field-" + index}
-      />
-    ))
-  );
 
   return (
     <div className="flex flex-col">
@@ -112,7 +106,19 @@ export function LowLevelTestCasesConfigStep() {
                 </TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>{elements}</TableBody>
+            <TableBody>
+              {fields.map((field, index) => {
+                return (
+                  <TestCaseFieldConfig
+                    index={index}
+                    field={field}
+                    removeField={() => removeField(index)}
+                    updateField={updateField}
+                    key={"field-" + index}
+                  />
+                );
+              })}
+            </TableBody>
           </Table>
         </CardContent>
         <CardFooter className="flex justify-between">
