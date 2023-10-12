@@ -19,41 +19,38 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { ArtifactConfigFieldsSchema } from "@/schemas/artifact-config-fields-schema";
+import { TestCaseFieldConfig } from "./test_case_field_config";
 
 export function LowLevelTestCasesConfigStep() {
   const [fields, setFields] = useState([
-    {
-      key: "ID",
-      type: "numeric",
-      required: true,
-    },
-    {
+    ArtifactConfigFieldsSchema.parse({
       key: "Título",
       type: "text",
       required: true,
-    },
-    {
+    }),
+    ArtifactConfigFieldsSchema.parse({
       key: "Estado",
       type: "selection",
       required: true,
       options: ["Por hacer", "En progreso", "Completo"],
-    },
-    {
+    }),
+    ArtifactConfigFieldsSchema.parse({
       key: "Prioridad",
       type: "selection",
       required: false,
       options: ["Alta", "Media", "Baja"],
-    },
-    {
+    }),
+    ArtifactConfigFieldsSchema.parse({
       key: "Responsable",
       type: "member",
       required: false,
-    },
-    {
+    }),
+    ArtifactConfigFieldsSchema.parse({
       key: "Descripción",
       type: "text",
       required: false,
-    },
+    }),
   ]);
 
   return (
@@ -61,58 +58,21 @@ export function LowLevelTestCasesConfigStep() {
       <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
         Configura tus casos de prueba de bajo nivel
       </h2>
-      <Table>
+      {/* <Table className="w-[39rem] overflow-x-auto"> */}
+      <Table className="overflow-x-auto">
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead>Campo</TableHead>
-            <TableHead>Tipo de dato</TableHead>
+            <TableHead className="flex flex-row justify-between items-center">
+              <span>Campo</span>
+              <span>Tipo de dato</span>
+              <span>Opciones</span>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {fields.map((field) => (
-            <TableRow key={field.key}>
-              <TableCell className="font-medium">
-                <Input
-                  type="text"
-                  placeholder="Field name"
-                  value={field.key}
-                  disabled={field.required}
-                  required={true}
-                />
-              </TableCell>
-              <TableCell>
-                <Select value={field.type} disabled={field.required}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Field data type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="text">Texto</SelectItem>
-                    <SelectItem value="numeric">Numérico</SelectItem>
-                    <SelectItem value="selection">Selección</SelectItem>
-                    <SelectItem value="member">Miembro</SelectItem>
-                  </SelectContent>
-                </Select>
-              </TableCell>
-              {field.options ? (
-                <TableCell className="font-medium">
-                  <Input
-                    type="text"
-                    placeholder="Field name"
-                    value={field.options}
-                    disabled={field.required}
-                    required={true}
-                  />
-                </TableCell>
-              ) : (
-                <div></div>
-              )}
-              <TableCell>
-                <Button variant="outline" size="icon" disabled={field.required}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </TableCell>
-            </TableRow>
+          {fields.map((field, index) => (
+            <TestCaseFieldConfig field={field} index={index} />
           ))}
         </TableBody>
       </Table>
