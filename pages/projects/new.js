@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ProjectInitial } from "@/components/new-project/project-initial";
 import { useState } from "react";
-import { LowLevelTestCasesConfigStep } from "@/components/new-project/low_level_test_cases_config_step";
+import { LowLevelTestCasesConfigStep } from "@/components/new-project/low-level-test-cases-config-view";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);

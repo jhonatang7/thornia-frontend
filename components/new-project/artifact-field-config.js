@@ -6,7 +6,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -29,13 +28,17 @@ export function TestCaseFieldConfig({
   removeField,
   updateField,
 }) {
+  const [selectionOptions, setSelectionOptions] = useState([...field.options]);
   const form = useForm({
     resolver: zodResolver(ArtifactConfigFieldsSchema),
     mode: "onChange",
     defaultValues: field,
   });
 
-  const [selectionOptions, setSelectionOptions] = useState([...field.options]);
+  useEffect(() => {
+    form.reset(field);
+    form.trigger();
+  }, [field]);
 
   const handleBlur = (e) => {
     updateField(index, { ...form.getValues(), options: selectionOptions });
@@ -75,11 +78,6 @@ export function TestCaseFieldConfig({
       e.target.value = lastValue + ",";
     }
   };
-
-  useEffect(() => {
-    form.reset(field);
-    form.trigger();
-  }, [field]);
 
   return (
     <TableRow>

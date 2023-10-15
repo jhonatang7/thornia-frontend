@@ -8,72 +8,12 @@ import {
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { TestCaseFieldConfig } from "./test_case_field_config";
+import { TestCaseFieldConfig } from "./artifact-field-config";
 import { Plus } from "lucide-react";
+import { lowLevelTestCasesDefaultValues } from "./artifacts-default-values";
 
 export function LowLevelTestCasesConfigStep() {
-  const [fields, setFields] = useState([
-    {
-      key: "Título",
-      type: "text",
-      required: true,
-      options: [],
-    },
-    {
-      key: "Estado",
-      type: "selection",
-      required: true,
-      options: ["Pendiente", "Aprobado", "Fallido"],
-    },
-    {
-      key: "Prioridad",
-      type: "selection",
-      required: false,
-      options: ["Alta", "Media", "Baja"],
-    },
-    {
-      key: "Responsable",
-      type: "member",
-      required: false,
-      options: [],
-    },
-    {
-      key: "Descripción",
-      type: "text",
-      required: false,
-      options: [],
-    },
-    {
-      key: "Precondiciones",
-      type: "text",
-      required: false,
-      options: [],
-    },
-    {
-      key: "Entradas",
-      type: "text",
-      required: false,
-      options: [],
-    },
-    {
-      key: "Pasos",
-      type: "text",
-      required: false,
-      options: [],
-    },
-    {
-      key: "Resutlados esperados",
-      type: "text",
-      required: false,
-      options: [],
-    },
-    {
-      key: "Tiempo estimado",
-      type: "datetime",
-      required: false,
-      options: [],
-    },
-  ]);
+  const [fields, setFields] = useState(lowLevelTestCasesDefaultValues);
 
   const addField = () => {
     setFields([
