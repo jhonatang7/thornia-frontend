@@ -29,20 +29,15 @@ export function TestCaseFieldConfig({
   removeField,
   updateField,
 }) {
-  console.log(field);
   const form = useForm({
     resolver: zodResolver(ArtifactConfigFieldsSchema),
     mode: "onChange",
     defaultValues: field,
   });
 
-  // useEffect(() => {
-  // console.log("USE EFFECT VALORES FORM");
-  // console.log(form.getValues());
-  // if (form.formState.isValid) {
-  // updateField(index, form.getValues());
-  // }
-  // }, [form.watch("key"), form.watch("type"), form.watch("options")]);
+  const handleBlur = () => {
+    updateField(index, form.getValues());
+  };
 
   useEffect(() => {
     form.reset(field);
@@ -66,6 +61,7 @@ export function TestCaseFieldConfig({
                       placeholder="Nombre del campo"
                       disabled={field.required}
                       required={true}
+                      onBlur={handleBlur}
                     />
                   </FormControl>
                   <FormMessage />
@@ -80,7 +76,10 @@ export function TestCaseFieldConfig({
                 <FormItem>
                   <Select
                     disabled={field.required}
-                    onValueChange={formField.onChange}
+                    onValueChange={(event) => {
+                      formField.onChange(event);
+                      handleBlur();
+                    }}
                     value={formField.value}
                   >
                     <FormControl>
@@ -111,6 +110,7 @@ export function TestCaseFieldConfig({
                         placeholder="Opciones de selección"
                         disabled={field.required}
                         required={true}
+                        onBlur={handleBlur}
                       />
                     </FormControl>
                   </FormItem>
@@ -128,7 +128,7 @@ export function TestCaseFieldConfig({
           size="icon"
           disabled={field.required}
           onClick={() => {
-            updateField(index, form.getValues());
+            handleBlur();
             removeField();
           }}
         >

@@ -8,12 +8,12 @@ export default function NewProject() {
   const [step, setStep] = useState(0);
   const [projectData, setProjectData] = useState({});
   const componentsDictionary = [
+    <LowLevelTestCasesConfigStep />,
     <ProjectInitial
       setStep={setStep}
       projectData={projectData}
       setProjectData={setProjectData}
     />,
-    <LowLevelTestCasesConfigStep />,
   ];
 
   return (
