@@ -1,14 +1,13 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TestCaseFieldConfig } from "./test_case_field_config";
 import { Plus } from "lucide-react";
 
@@ -41,6 +40,36 @@ export function LowLevelTestCasesConfigStep() {
     {
       key: "Descripción",
       type: "text",
+      required: false,
+      options: [],
+    },
+    {
+      key: "Precondiciones",
+      type: "text",
+      required: false,
+      options: [],
+    },
+    {
+      key: "Entradas",
+      type: "text",
+      required: false,
+      options: [],
+    },
+    {
+      key: "Pasos",
+      type: "text",
+      required: false,
+      options: [],
+    },
+    {
+      key: "Resutlados esperados",
+      type: "text",
+      required: false,
+      options: [],
+    },
+    {
+      key: "Tiempo estimado",
+      type: "datetime",
       required: false,
       options: [],
     },
@@ -78,15 +107,14 @@ export function LowLevelTestCasesConfigStep() {
       {/* <Table className="w-[39rem] overflow-x-auto"> */}
       <Card>
         <CardContent className="p-2">
-          <Table className="overflow-x-auto">
-            {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="flex flex-row justify-between items-center">
                   <span>Campo</span>
                   <span>Tipo de dato</span>
-                  <span>Opciones</span>
                 </TableHead>
+                <TableHead className="text-right">Opciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -109,7 +137,7 @@ export function LowLevelTestCasesConfigStep() {
               {/* <Plus className="mr-2 h-4" /> */}
               Añadir campo
             </Button>
-            <Button>Siguiente</Button>
+            <Button onClick={() => console.log(fields)}>Siguiente</Button>
           </div>
         </CardFooter>
       </Card>

@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function TestCaseFieldConfig({
   index,
@@ -35,8 +35,45 @@ export function TestCaseFieldConfig({
     defaultValues: field,
   });
 
-  const handleBlur = () => {
-    updateField(index, form.getValues());
+  const [selectionOptions, setSelectionOptions] = useState([...field.options]);
+
+  const handleBlur = (e) => {
+    updateField(index, { ...form.getValues(), options: selectionOptions });
+  };
+
+  const handleOptionsKeyUp = (e) => {
+    if (e.key !== ",") return;
+
+    let value = e.target.value;
+    if (!value.trim() && selectionOptions.length === 0) return;
+
+    if (e.key === ",") {
+      let option = e.target.value.substring(0, value.indexOf(","));
+      setSelectionOptions([...selectionOptions, option]);
+      e.target.value = "";
+      form.setValue("options", "");
+    }
+  };
+
+  const handleOptionsKeyDown = (e) => {
+    if (e.key !== "Backspace") return;
+    let value = e.target.value;
+
+    if (
+      e.key === "Backspace" &&
+      value.trim().length === 0 &&
+      selectionOptions.length > 0
+    ) {
+      let lastValue = selectionOptions.at(-1);
+
+      let updatedOptions = [...selectionOptions];
+      updatedOptions.pop();
+      setSelectionOptions(updatedOptions);
+
+      console.log(lastValue);
+      form.setValue("options", [lastValue + ","]);
+      e.target.value = lastValue + ",";
+    }
   };
 
   useEffect(() => {
@@ -45,7 +82,6 @@ export function TestCaseFieldConfig({
 
   return (
     <TableRow>
-      <TableCell>{index}</TableCell>
       <TableCell className="font-medium p-2">
         <Form {...form}>
           <form className="flex flex-row space-x-5">
@@ -92,35 +128,44 @@ export function TestCaseFieldConfig({
                       <SelectItem value="numeric">Numérico</SelectItem>
                       <SelectItem value="selection">Selección</SelectItem>
                       <SelectItem value="member">Miembro</SelectItem>
+                      <SelectItem value="datetime">Tiempo</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
               )}
             ></FormField>
-            {form.watch("type") === "selection" ? (
-              <FormField
-                control={form.control}
-                name="options"
-                render={({ field: formField }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...formField}
-                        type="text"
-                        placeholder="Opciones de selección"
-                        disabled={field.required}
-                        required={true}
-                        onBlur={handleBlur}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              ></FormField>
-            ) : (
-              <div></div>
-            )}
           </form>
         </Form>
+      </TableCell>
+      <TableCell className="max-w-xs">
+        {form.watch("type") === "selection" ? (
+          <>
+            {selectionOptions.length > 0 && (
+              <div className="flex flex-row space-x-1 flex-wrap mb-1">
+                {selectionOptions.length > 0 &&
+                  selectionOptions.map((option) => (
+                    <Badge variant="secondary" className="mb-1">
+                      {option}
+                    </Badge>
+                  ))}
+              </div>
+            )}
+
+            {!field.required && (
+              <Input
+                type="text"
+                placeholder="Opciones ( ' , ' para separar)"
+                disabled={field.required}
+                required={true}
+                onBlur={handleBlur}
+                onKeyUp={handleOptionsKeyUp}
+                onKeyDown={handleOptionsKeyDown}
+              />
+            )}
+          </>
+        ) : (
+          <div></div>
+        )}
       </TableCell>
       <TableCell className="p-2">
         <Button
