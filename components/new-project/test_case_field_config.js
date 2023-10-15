@@ -78,6 +78,7 @@ export function TestCaseFieldConfig({
 
   useEffect(() => {
     form.reset(field);
+    form.trigger();
   }, [field]);
 
   return (
