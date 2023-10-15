@@ -101,9 +101,12 @@ export function LowLevelTestCasesConfigStep() {
 
   return (
     <div className="flex flex-col">
-      <h2 className="scroll-m-20 pb-4 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+      <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
         Configura tus casos de prueba de bajo nivel
       </h2>
+      <p className="pb-4 text-muted-foreground">
+        Predefinimos esta estructura para ti, siéntete libre de modificarla
+      </p>
       <Card className="p-2 w-[44rem]">
         <CardContent className="p-0 max-h-96 overflow-y-auto">
           <Table>
