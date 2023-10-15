@@ -155,7 +155,7 @@ export function TestCaseFieldConfig({
             {!field.required && (
               <Input
                 type="text"
-                placeholder="Opciones ( ' , ' para separar)"
+                placeholder="Opciones ( ' , ' para agregar)"
                 disabled={field.required}
                 required={true}
                 onBlur={handleBlur}
