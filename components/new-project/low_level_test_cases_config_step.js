@@ -23,7 +23,7 @@ export function LowLevelTestCasesConfigStep() {
       key: "Estado",
       type: "selection",
       required: true,
-      options: ["Por hacer", "En progreso", "Completo"],
+      options: ["Pendiente", "Aprobado", "Fallido"],
     },
     {
       key: "Prioridad",
@@ -101,17 +101,16 @@ export function LowLevelTestCasesConfigStep() {
 
   return (
     <div className="flex flex-col">
-      <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+      <h2 className="scroll-m-20 pb-4 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
         Configura tus casos de prueba de bajo nivel
       </h2>
-      {/* <Table className="w-[39rem] overflow-x-auto"> */}
-      <Card>
-        <CardContent className="p-2">
+      <Card className="p-2 w-[44rem]">
+        <CardContent className="p-0 max-h-96 overflow-y-auto">
           <Table>
-            <TableHeader>
+            <TableHeader className="static">
               <TableRow>
-                <TableHead className="flex flex-row justify-between items-center">
-                  <span>Campo</span>
+                <TableHead className="items-center">
+                  <span className="mr-40">Campo</span>
                   <span>Tipo de dato</span>
                 </TableHead>
                 <TableHead className="text-right">Opciones</TableHead>
@@ -130,7 +129,7 @@ export function LowLevelTestCasesConfigStep() {
             </TableBody>
           </Table>
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-between p-2">
           <Button variant="subtle">Atrás</Button>
           <div>
             <Button variant="outline" className="mr-2" onClick={addField}>
