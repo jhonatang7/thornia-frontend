@@ -12,7 +12,7 @@ import { TestCaseFieldConfig } from "./artifact-field-config";
 import { Plus } from "lucide-react";
 import { lowLevelTestCasesDefaultValues } from "./artifacts-default-values";
 
-export function LowLevelTestCasesConfigStep() {
+export function LowLevelTestCasesConfigView() {
   const [fields, setFields] = useState(lowLevelTestCasesDefaultValues);
 
   const addField = () => {
