@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { projectInitialSchema } from "@/schemas/new-project-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export function ProjectInitial({ setStep, projectData, setProjectData }) {
+export function ProjectInitial({ setStep, updateProjectData }) {
   const formProjectInitial = useForm({
     resolver: zodResolver(projectInitialSchema),
     mode: "onChange",
@@ -22,10 +22,12 @@ export function ProjectInitial({ setStep, projectData, setProjectData }) {
       projectPrefix: "",
     },
   });
+
   const onSubmit = (values) => {
     setStep(1);
-    setProjectData({...projectData, ...values});
+    updateProjectData(values);
   };
+  
   return (
     <div className="grow flex flex-col max-w-sm">
       <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">

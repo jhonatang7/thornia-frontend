@@ -6,7 +6,7 @@ export const ArtifactConfigFieldsSchema = zod.object({
     .min(1, {
       message: "*Obligatorio",
     }),
-  type: zod.enum(["numeric", "text", "selection", "member"]),
+  type: zod.enum(["numeric", "text", "selection", "member", "datetime"]),
   required: zod.boolean(),
   options: zod.optional(zod.array(zod.string())),
 });

@@ -2,19 +2,25 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ProjectInitial } from "@/components/new-project/project-initial";
 import { IntroductionStatesMaps } from "@/components/new-project/introduction-states-maps";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-test-cases-config-view";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
   const [projectData, setProjectData] = useState({});
+
+  const updateProjectData = (newData) => {
+    setProjectData({ ...projectData, ...newData });
+  };
+
+  useEffect(() => console.log(projectData), [projectData]);
+
   const componentsDictionary = [
-    <ProjectInitial
+    <ProjectInitial setStep={setStep} updateProjectData={updateProjectData} />,
+    <LowLevelTestCasesConfigView
       setStep={setStep}
-      projectData={projectData}
-      setProjectData={setProjectData}
+      updateProjectData={updateProjectData}
     />,
-    <LowLevelTestCasesConfigView />,
     <IntroductionStatesMaps />,
   ];
 

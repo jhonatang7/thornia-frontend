@@ -11,8 +11,12 @@ import { useState } from "react";
 import { TestCaseFieldConfig } from "./artifact-field-config";
 import { Plus } from "lucide-react";
 import { lowLevelTestCasesDefaultValues } from "./artifacts-default-values";
+import { ArtifactConfigFieldsSchema } from "@/schemas/artifact-config-fields-schema";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
-export function LowLevelTestCasesConfigView() {
+export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
+  const { toast } = useToast();
   const [fields, setFields] = useState(lowLevelTestCasesDefaultValues);
 
   const addField = () => {
@@ -37,6 +41,32 @@ export function LowLevelTestCasesConfigView() {
     let newFields = [...fields];
     newFields.splice(index, 1, field);
     setFields(newFields);
+  };
+
+  const onSubmit = () => {
+    let areFieldsValid = true;
+
+    fields.forEach((item) => {
+      let { success } = ArtifactConfigFieldsSchema.safeParse(item);
+      if (!success) {
+        areFieldsValid = false;
+      }
+
+      if (item.type === "selection" && item.options.length === 0) {
+        areFieldsValid = false;
+      }
+    });
+
+    if (areFieldsValid) {
+      updateProjectData({ fields: fields });
+      setStep(2);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Asegúrate de que no tienes campos vacíos",
+        description: "Revisa los nombres y opciones de tus campos",
+      });
+    }
   };
 
   return (
@@ -79,10 +109,11 @@ export function LowLevelTestCasesConfigView() {
               {/* <Plus className="mr-2 h-4" /> */}
               Añadir campo
             </Button>
-            <Button onClick={() => console.log(fields)}>Siguiente</Button>
+            <Button onClick={onSubmit}>Siguiente</Button>
           </div>
         </CardFooter>
       </Card>
+      <Toaster />
     </div>
   );
 }

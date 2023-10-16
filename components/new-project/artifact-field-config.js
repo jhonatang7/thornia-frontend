@@ -142,8 +142,12 @@ export function TestCaseFieldConfig({
             {selectionOptions.length > 0 && (
               <div className="flex flex-row space-x-1 flex-wrap mb-1">
                 {selectionOptions.length > 0 &&
-                  selectionOptions.map((option) => (
-                    <Badge variant="secondary" className="mb-1">
+                  selectionOptions.map((option, badgeIndex) => (
+                    <Badge
+                      variant="secondary"
+                      className="mb-1"
+                      key={index + "badge-" + badgeIndex}
+                    >
                       {option}
                     </Badge>
                   ))}
