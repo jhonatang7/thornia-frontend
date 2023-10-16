@@ -72,7 +72,7 @@ export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
   return (
     <div className="flex flex-col">
       <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-        Configura tus casos de prueba de bajo nivel
+        Configura tus Casos de Prueba de Bajo Nivel (LLTC)
       </h2>
       <p className="pb-4 text-muted-foreground">
         Predefinimos esta estructura para ti, siéntete libre de modificarla
