@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ProjectInitial } from "@/components/new-project/project-initial";
+import { IntroductionStatesMaps } from "@/components/new-project/introduction-states-maps";
 import { useState } from "react";
 import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-test-cases-config-view";
 
@@ -8,12 +9,13 @@ export default function NewProject() {
   const [step, setStep] = useState(0);
   const [projectData, setProjectData] = useState({});
   const componentsDictionary = [
-    <LowLevelTestCasesConfigView />,
     <ProjectInitial
       setStep={setStep}
       projectData={projectData}
       setProjectData={setProjectData}
     />,
+    <LowLevelTestCasesConfigView />,
+    <IntroductionStatesMaps />,
   ];
 
   return (
