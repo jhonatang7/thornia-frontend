@@ -4,6 +4,7 @@ import { ProjectInitial } from "@/components/new-project/project-initial";
 import { IntroductionStatesMaps } from "@/components/new-project/introduction-states-maps";
 import { useEffect, useState } from "react";
 import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-test-cases-config-view";
+import { HighLevelTestCasesConfigView } from "@/components/new-project/high-level-test-cases-config-view";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
@@ -18,6 +19,10 @@ export default function NewProject() {
   const componentsDictionary = [
     <ProjectInitial setStep={setStep} updateProjectData={updateProjectData} />,
     <LowLevelTestCasesConfigView
+      setStep={setStep}
+      updateProjectData={updateProjectData}
+    />,
+    <HighLevelTestCasesConfigView
       setStep={setStep}
       updateProjectData={updateProjectData}
     />,
