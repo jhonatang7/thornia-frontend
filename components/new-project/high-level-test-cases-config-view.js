@@ -10,14 +10,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { TestCaseFieldConfig } from "./artifact-field-config";
 import { Plus } from "lucide-react";
-import { lowLevelTestCasesDefaultValues } from "./artifacts-default-values";
 import { ArtifactConfigFieldsSchema } from "@/schemas/artifact-config-fields-schema";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { highLevelTestCasesDefaultValues } from "./artifacts-default-values";
 
-export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
+export function HighLevelTestCasesConfigView({ setStep, updateProjectData }) {
   const { toast } = useToast();
-  const [fields, setFields] = useState(lowLevelTestCasesDefaultValues);
+  const [fields, setFields] = useState(highLevelTestCasesDefaultValues);
 
   const addField = () => {
     setFields([
@@ -58,8 +58,8 @@ export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
     });
 
     if (areFieldsValid) {
-      updateProjectData({ lltcFields: fields });
-      setStep(2);
+      updateProjectData({ hltcFields: fields });
+      setStep(3);
     } else {
       toast({
         variant: "destructive",
