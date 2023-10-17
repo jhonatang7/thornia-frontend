@@ -47,33 +47,27 @@ export function TestCaseFieldConfig({
   const handleOptionsKeyUp = (e) => {
     if (e.key !== ",") return;
 
-    let value = e.target.value;
-    if (!value.trim() && selectionOptions.length === 0) return;
+    let option = e.target.value.substring(0, e.target.value.indexOf(","));
+    if (!option.trim()) return;
+    if (selectionOptions.indexOf(option) !== -1) return;
+    if (option.length === 0) return;
 
-    if (e.key === ",") {
-      let option = e.target.value.substring(0, value.indexOf(","));
-      setSelectionOptions([...selectionOptions, option]);
-      e.target.value = "";
-      form.setValue("options", "");
-    }
+    setSelectionOptions([...selectionOptions, option]);
+    e.target.value = "";
+    form.setValue("options", "");
   };
 
   const handleOptionsKeyDown = (e) => {
     if (e.key !== "Backspace") return;
     let value = e.target.value;
 
-    if (
-      e.key === "Backspace" &&
-      value.trim().length === 0 &&
-      selectionOptions.length > 0
-    ) {
+    if (!value.trim() && selectionOptions.length > 0) {
       let lastValue = selectionOptions.at(-1);
 
       let updatedOptions = [...selectionOptions];
       updatedOptions.pop();
       setSelectionOptions(updatedOptions);
 
-      console.log(lastValue);
       form.setValue("options", [lastValue + ","]);
       e.target.value = lastValue + ",";
     }
