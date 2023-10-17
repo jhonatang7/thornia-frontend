@@ -15,7 +15,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { highLevelTestCasesDefaultValues } from "./artifacts-default-values";
 
-export function HighLevelTestCasesConfigView({ setStep, updateProjectData }) {
+export function HighLevelTestCasesConfigView({
+  goToNextStep,
+  updateProjectData,
+}) {
   const { toast } = useToast();
   const [fields, setFields] = useState(highLevelTestCasesDefaultValues);
 
@@ -85,7 +88,7 @@ export function HighLevelTestCasesConfigView({ setStep, updateProjectData }) {
     }
 
     updateProjectData({ hltcFields: fields });
-    setStep(3);
+    goToNextStep();
   };
 
   return (

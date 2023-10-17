@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { projectInitialSchema } from "@/schemas/new-project-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export function ProjectInitial({ setStep, updateProjectData }) {
+export function ProjectInitial({ goToNextStep, updateProjectData }) {
   const formProjectInitial = useForm({
     resolver: zodResolver(projectInitialSchema),
     mode: "onChange",
@@ -24,8 +24,8 @@ export function ProjectInitial({ setStep, updateProjectData }) {
   });
 
   const onSubmit = (values) => {
-    setStep(1);
     updateProjectData(values);
+    goToNextStep();
   };
   
   return (
