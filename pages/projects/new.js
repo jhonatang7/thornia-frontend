@@ -5,6 +5,7 @@ import { IntroductionStatesMaps } from "@/components/new-project/introduction-st
 import { useEffect, useState } from "react";
 import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-test-cases-config-view";
 import { HighLevelTestCasesConfigView } from "@/components/new-project/high-level-test-cases-config-view";
+import { BugsConfigView } from "@/components/new-project/bugs-config-view";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
@@ -26,6 +27,7 @@ export default function NewProject() {
       setStep={setStep}
       updateProjectData={updateProjectData}
     />,
+    <BugsConfigView setStep={setStep} updateProjectData={updateProjectData} />,
     <IntroductionStatesMaps />,
   ];
 
