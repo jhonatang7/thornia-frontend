@@ -10,14 +10,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { TestCaseFieldConfig } from "./artifact-field-config";
 import { Plus } from "lucide-react";
-import { lowLevelTestCasesDefaultValues } from "./artifacts-default-values";
 import { ArtifactConfigFieldsSchema } from "@/schemas/artifact-config-fields-schema";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { bugsDefaultValues } from "./artifacts-default-values";
 
-export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
+export function BugsConfigView({ setStep, updateProjectData }) {
   const { toast } = useToast();
-  const [fields, setFields] = useState(lowLevelTestCasesDefaultValues);
+  const [fields, setFields] = useState(bugsDefaultValues);
 
   const addField = () => {
     setFields([
@@ -84,14 +84,14 @@ export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
       return;
     }
 
-    updateProjectData({ lltcFields: fields });
-    setStep(2);
+    updateProjectData({ bugFields: fields });
+    setStep(4);
   };
 
   return (
     <div className="flex flex-col">
       <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-        Configura tus Casos de Prueba de Bajo Nivel (LLTC)
+        Configura la estructura de tus Errores (Bugs)
       </h2>
       <p className="pb-4 text-muted-foreground">
         Predefinimos esta estructura para ti, siéntete libre de modificarla

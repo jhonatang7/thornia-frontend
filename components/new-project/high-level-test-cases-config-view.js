@@ -44,29 +44,48 @@ export function HighLevelTestCasesConfigView({ setStep, updateProjectData }) {
   };
 
   const onSubmit = () => {
-    let areFieldsValid = true;
+    let thereAreEmptyFields = false;
+    let thereAreDuplicateFields = false;
 
     fields.forEach((item) => {
       let { success } = ArtifactConfigFieldsSchema.safeParse(item);
       if (!success) {
-        areFieldsValid = false;
+        thereAreEmptyFields = true;
       }
 
       if (item.type === "selection" && item.options.length === 0) {
-        areFieldsValid = false;
+        thereAreEmptyFields = true;
+      }
+
+      let coincidences = fields.filter(
+        (field) => field.key.toLowerCase() === item.key.toLowerCase()
+      );
+
+      if (coincidences.length > 1) {
+        thereAreDuplicateFields = true;
       }
     });
 
-    if (areFieldsValid) {
-      updateProjectData({ hltcFields: fields });
-      setStep(3);
-    } else {
+    if (thereAreEmptyFields) {
       toast({
         variant: "destructive",
         title: "Asegúrate de que no tienes campos vacíos",
         description: "Revisa los nombres y opciones de tus campos",
       });
+      return;
     }
+
+    if (thereAreDuplicateFields) {
+      toast({
+        variant: "destructive",
+        title: "Asegúrate de que no tienes campos duplicados",
+        description: "Los nombres para cada campo deben ser únicos",
+      });
+      return;
+    }
+
+    updateProjectData({ hltcFields: fields });
+    setStep(3);
   };
 
   return (
