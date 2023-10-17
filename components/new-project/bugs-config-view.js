@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { bugsDefaultValues } from "./artifacts-default-values";
 
-export function BugsConfigView({ setStep, updateProjectData }) {
+export function BugsConfigView({ goToNextStep, updateProjectData }) {
   const { toast } = useToast();
   const [fields, setFields] = useState(bugsDefaultValues);
 
@@ -85,7 +85,7 @@ export function BugsConfigView({ setStep, updateProjectData }) {
     }
 
     updateProjectData({ bugFields: fields });
-    setStep(4);
+    goToNextStep();
   };
 
   return (

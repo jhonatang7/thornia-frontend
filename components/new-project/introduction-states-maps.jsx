@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export function IntroductionStatesMaps() {
+export function IntroductionStatesMaps({goToNextStep}) {
   return (
     <div className="flex mx-1 justify-between space-x-8">
       <div className="flex flex-col space-y-4 justify-center">
@@ -17,7 +17,7 @@ export function IntroductionStatesMaps() {
         </div>
         <div className="flex space-x-4 justify-end">
           <Button variant="ghost">Atrás</Button>
-          <Button>Siguiente</Button>
+          <Button onClick={goToNextStep}>Siguiente</Button>
         </div>
       </div>
       <div className="h-96">HOLA</div>

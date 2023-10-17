@@ -15,7 +15,10 @@ import { ArtifactConfigFieldsSchema } from "@/schemas/artifact-config-fields-sch
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 
-export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
+export function LowLevelTestCasesConfigView({
+  goToNextStep,
+  updateProjectData,
+}) {
   const { toast } = useToast();
   const [fields, setFields] = useState(lowLevelTestCasesDefaultValues);
 
@@ -85,7 +88,7 @@ export function LowLevelTestCasesConfigView({ setStep, updateProjectData }) {
     }
 
     updateProjectData({ lltcFields: fields });
-    setStep(2);
+    goToNextStep();
   };
 
   return (

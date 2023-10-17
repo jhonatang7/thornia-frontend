@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-test-cases-config-view";
 import { HighLevelTestCasesConfigView } from "@/components/new-project/high-level-test-cases-config-view";
 import { BugsConfigView } from "@/components/new-project/bugs-config-view";
+import { ProjectMembersAdditionView } from "@/components/new-project/project-members-addition-view";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
@@ -18,30 +19,36 @@ export default function NewProject() {
   useEffect(() => console.log(projectData), [projectData]);
 
   const componentsDictionary = [
-    <ProjectInitial setStep={setStep} updateProjectData={updateProjectData} />,
+    <ProjectInitial
+      goToNextStep={() => setStep(1)}
+      updateProjectData={updateProjectData}
+    />,
     <LowLevelTestCasesConfigView
-      setStep={setStep}
+      goToNextStep={() => setStep(2)}
       updateProjectData={updateProjectData}
     />,
     <HighLevelTestCasesConfigView
-      setStep={setStep}
+      goToNextStep={() => setStep(3)}
       updateProjectData={updateProjectData}
     />,
-    <BugsConfigView setStep={setStep} updateProjectData={updateProjectData} />,
-    <IntroductionStatesMaps />,
+    <BugsConfigView
+      goToNextStep={() => setStep(4)}
+      updateProjectData={updateProjectData}
+    />,
+    <IntroductionStatesMaps goToNextStep={() => setStep(5)} />,
+    <ProjectMembersAdditionView
+      goToNextStep={() => setStep(6)}
+      updateProjectData={updateProjectData}
+    />,
   ];
 
   return (
     <main className="flex flex-col">
       <div className="flex my-12">
         <div className="basis-[10%]" />
-        <Button
-          variant="outline"
-          className="basis-[10%] flex-none"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Volver
-        </Button>
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+          Paso {step + 1}/6
+        </h3>
         <h1 className="basis-[70%] text-end scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           Nuevo proyecto
         </h1>
