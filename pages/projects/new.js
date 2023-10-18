@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import { ProjectInfoView } from "@/components/new-project/project-info-view";
 import { IntroductionStatesMaps } from "@/components/new-project/introduction-states-maps";
 import { useEffect, useState } from "react";
