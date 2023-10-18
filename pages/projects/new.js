@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { ProjectInitial } from "@/components/new-project/project-initial";
+import { ProjectInfoView } from "@/components/new-project/project-info-view";
 import { IntroductionStatesMaps } from "@/components/new-project/introduction-states-maps";
 import { useEffect, useState } from "react";
 import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-test-cases-config-view";
@@ -12,6 +12,10 @@ export default function NewProject() {
   const [step, setStep] = useState(0);
   const [projectData, setProjectData] = useState({});
 
+  const goToPreviousStep = () => {
+    setStep(step - 1);
+  };
+
   const updateProjectData = (newData) => {
     setProjectData({ ...projectData, ...newData });
   };
@@ -19,26 +23,32 @@ export default function NewProject() {
   useEffect(() => console.log(projectData), [projectData]);
 
   const componentsDictionary = [
-    <ProjectInitial
+    <ProjectInfoView
       goToNextStep={() => setStep(1)}
       updateProjectData={updateProjectData}
     />,
     <LowLevelTestCasesConfigView
       goToNextStep={() => setStep(2)}
       updateProjectData={updateProjectData}
+      goToPreviousStep={goToPreviousStep}
     />,
     <HighLevelTestCasesConfigView
       goToNextStep={() => setStep(3)}
       updateProjectData={updateProjectData}
+      goToPreviousStep={goToPreviousStep}
     />,
     <BugsConfigView
       goToNextStep={() => setStep(4)}
       updateProjectData={updateProjectData}
+      goToPreviousStep={goToPreviousStep}
     />,
-    <IntroductionStatesMaps goToNextStep={() => setStep(5)} />,
+    <IntroductionStatesMaps
+      goToNextStep={() => setStep(5)}
+      goToPreviousStep={goToPreviousStep}
+    />,
     <ProjectMembersAdditionView
-      goToNextStep={() => setStep(6)}
       updateProjectData={updateProjectData}
+      goToPreviousStep={goToPreviousStep}
     />,
   ];
 

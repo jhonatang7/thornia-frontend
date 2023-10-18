@@ -6,7 +6,7 @@ import { useState } from "react";
 import * as zod from "zod";
 
 export function ProjectMembersAdditionView({
-  goToNextStep,
+  goToPreviousStep,
   updateProjectData,
 }) {
   const [memberEmails, setMemberEmails] = useState([]);
@@ -15,7 +15,7 @@ export function ProjectMembersAdditionView({
 
   const onSubmit = () => {
     updateProjectData({ members: memberEmails });
-    goToNextStep();
+    // goToNextStep();
   };
 
   const handleOnChange = (e) => {
@@ -33,7 +33,6 @@ export function ProjectMembersAdditionView({
     if (!isEmailValid) return;
 
     let emailAlreadyExists = memberEmails.indexOf(email) !== -1;
-    console.log(emailAlreadyExists);
     setAlreadyExists(emailAlreadyExists);
     if (emailAlreadyExists) return;
 
@@ -97,8 +96,10 @@ export function ProjectMembersAdditionView({
       )}
 
       <div className="flex flex-row py-4 justify-end space-x-4">
-        <Button variant="outline">Atrás</Button>
-        <Button onClick={onSubmit}>Siguiente</Button>
+        <Button onClick={goToPreviousStep} variant="outline">
+          Atrás
+        </Button>
+        <Button onClick={onSubmit}>Crear proyecto</Button>
       </div>
     </div>
   );
