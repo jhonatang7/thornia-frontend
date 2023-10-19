@@ -88,7 +88,7 @@ export function BugsConfigView({
       return;
     }
 
-    updateProjectData({ bugFields: fields });
+    updateProjectData({ configurationBugs: fields });
     goToNextStep();
   };
 

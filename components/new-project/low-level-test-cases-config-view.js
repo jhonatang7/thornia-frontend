@@ -88,7 +88,7 @@ export function LowLevelTestCasesConfigView({
       return;
     }
 
-    updateProjectData({ lltcFields: fields });
+    updateProjectData({ configurationLLTC: fields });
     goToNextStep();
   };
 

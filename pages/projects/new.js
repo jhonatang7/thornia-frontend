@@ -5,6 +5,7 @@ import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-
 import { HighLevelTestCasesConfigView } from "@/components/new-project/high-level-test-cases-config-view";
 import { BugsConfigView } from "@/components/new-project/bugs-config-view";
 import { ProjectMembersAdditionView } from "@/components/new-project/project-members-addition-view";
+import { createProject } from "@/services/software-projects-service";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
@@ -19,6 +20,15 @@ export default function NewProject() {
   };
 
   useEffect(() => console.log(projectData), [projectData]);
+  useEffect(() => {
+    const lastStep = 6;
+    if (step !== lastStep) return;
+    async function sendRequest() {
+      let project = await createProject(projectData);
+      console.log(project);
+    }
+    sendRequest();
+  }, [step]);
 
   const componentsDictionary = [
     <ProjectInfoView
@@ -46,8 +56,10 @@ export default function NewProject() {
     />,
     <ProjectMembersAdditionView
       updateProjectData={updateProjectData}
+      goToNextStep={() => setStep(6)}
       goToPreviousStep={goToPreviousStep}
     />,
+    <h1>Cargando...</h1>,
   ];
 
   return (
@@ -68,3 +80,5 @@ export default function NewProject() {
     </main>
   );
 }
+
+NewProject.requireAuth = true;

@@ -49,9 +49,13 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
+    setInitializing(true);
     verifyAuthentication();
-    setInitializing(false);
   }, []);
+
+  useEffect(() => {
+    setInitializing(false);
+  }, [isAuthenticated]);
 
   const state = {
     user,

@@ -2,12 +2,12 @@ import * as zod from "zod";
 
 export const projectInitialSchema = zod
   .object({
-    projectName: zod
+    name: zod
       .string({ required_error: "Introduce un nombre para el proyecto" })
       .trim()
       .min(3, { message: "Debe tener al menos 3 caracteres" })
       .max(25, { message: "No debe pasar de 25 caracteres" }),
-    projectPrefix: zod
+    prefix: zod
       .string({ required_error: "Introduce un prefijo para tu proyecto" })
       .trim()
       .toUpperCase()
