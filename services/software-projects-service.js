@@ -19,8 +19,6 @@ export async function createProject(project) {
       }
     );
 
-    console.log(response);
-
     if (response.ok) {
       let project = await response.json();
       return { success: true, project: project };
