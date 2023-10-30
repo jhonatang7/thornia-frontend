@@ -22,6 +22,8 @@ import { signIn } from "@/services/authentication-service";
 import {
   localStorageKeys,
   saveToLocalStorage,
+  getFromSessionStorage,
+  sessionStorageKeys,
 } from "@/services/client-storage-service";
 import { useRouter } from "next/router";
 
@@ -29,13 +31,11 @@ export default function SignIn() {
   const [isRequestInProgress, setIsRequestInProgress] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const { isAuthenticated, verifyAuthentication } = useAuth();
+  const { isAuthenticated, verifyAuthentication, isInitializing } = useAuth();
 
   useEffect(() => {
-    console.log("USE EFFECT CALLED");
-    console.log(isAuthenticated);
     if (isAuthenticated) {
-      router.push("/home");
+      router.push(getFromSessionStorage(sessionStorageKeys.signInRedirectUrl));
     }
   }, [isAuthenticated]);
 
@@ -74,86 +74,93 @@ export default function SignIn() {
     }
   }
 
-  return (
-    <main className="min-h-screen place-content-center">
-      <Button
-        variant="outline"
-        className="mt-4 ml-4 mb-4"
-        onClick={() => router.back()}
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" /> Volver
-      </Button>
-      <div className="mb-6 flex justify-center">
-        <Avatar className=" w-28 h-28">
-          <AvatarImage alt="Logo" src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </div>
-      <h1 className="mb-12 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center">
-        Inicia sesión en Thornia
-      </h1>
-      <Form {...signInForm}>
-        <form
-          onSubmit={signInForm.handleSubmit(onSubmit)}
-          className="mb-4 container max-w-md"
-        >
-          <FormField
-            control={signInForm.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <FormLabel>Correo electrónico</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="correo@ejemplo.com" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={signInForm.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem className="mb-1">
-                <FormLabel>Contraseña</FormLabel>
-                <FormControl>
-                  <Input {...field} type="password" placeholder="*********" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex mb-4 justify-end">
-            <Link href="/restorepassword" passHref legacyBehavior>
-              <a className="text-sm mt-1 font-medium hover:underline">
-                ¿Olvidaste tu contraseña?
-              </a>
-            </Link>
-          </div>
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isRequestInProgress}
-          >
-            {isRequestInProgress && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
+  if (isInitializing) return <>Cargando...</>;
 
-            {isRequestInProgress ? (
-              <span>Espera un momento...</span>
-            ) : (
-              <span>Iniciar sesión</span>
-            )}
-          </Button>
-        </form>
-      </Form>
-      <div className="flex justify-center">
-        <p className="mx-1 text-base font-normal">¿Aún no tienes una cuenta?</p>
-        <Link href="/signup" passHref legacyBehavior>
-          <a className="text-base font-medium hover:underline">Regístrate</a>
-        </Link>
-      </div>
-      <Toaster />
-    </main>
+  return (
+    !isAuthenticated &&
+    !isInitializing && (
+      <main className="min-h-screen place-content-center">
+        <Button
+          variant="outline"
+          className="mt-4 ml-4 mb-4"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" /> Volver
+        </Button>
+        <div className="mb-6 flex justify-center">
+          <Avatar className=" w-28 h-28">
+            <AvatarImage alt="Logo" src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </div>
+        <h1 className="mb-12 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center">
+          Inicia sesión en Thornia
+        </h1>
+        <Form {...signInForm}>
+          <form
+            onSubmit={signInForm.handleSubmit(onSubmit)}
+            className="mb-4 container max-w-md"
+          >
+            <FormField
+              control={signInForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="mb-4">
+                  <FormLabel>Correo electrónico</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="correo@ejemplo.com" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={signInForm.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="mb-1">
+                  <FormLabel>Contraseña</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="password" placeholder="*********" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex mb-4 justify-end">
+              <Link href="/restorepassword" passHref legacyBehavior>
+                <a className="text-sm mt-1 font-medium hover:underline">
+                  ¿Olvidaste tu contraseña?
+                </a>
+              </Link>
+            </div>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isRequestInProgress}
+            >
+              {isRequestInProgress && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+
+              {isRequestInProgress ? (
+                <span>Espera un momento...</span>
+              ) : (
+                <span>Iniciar sesión</span>
+              )}
+            </Button>
+          </form>
+        </Form>
+        <div className="flex justify-center">
+          <p className="mx-1 text-base font-normal">
+            ¿Aún no tienes una cuenta?
+          </p>
+          <Link href="/signup" passHref legacyBehavior>
+            <a className="text-base font-medium hover:underline">Regístrate</a>
+          </Link>
+        </div>
+        <Toaster />
+      </main>
+    )
   );
 }

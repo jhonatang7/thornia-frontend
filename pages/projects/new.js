@@ -5,10 +5,17 @@ import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-
 import { HighLevelTestCasesConfigView } from "@/components/new-project/high-level-test-cases-config-view";
 import { BugsConfigView } from "@/components/new-project/bugs-config-view";
 import { ProjectMembersAdditionView } from "@/components/new-project/project-members-addition-view";
+import { createProject } from "@/services/software-projects-service";
+import {
+  ProjectCreationFailedMessage,
+  ProjectSuccessfullyCreatedMessage,
+} from "@/components/new-project/project-creation-completed-message";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
   const [projectData, setProjectData] = useState({});
+  const [projectSuccessfullyCreated, setProjectSuccessfullyCreated] =
+    useState(null);
 
   const goToPreviousStep = () => {
     setStep(step - 1);
@@ -19,6 +26,22 @@ export default function NewProject() {
   };
 
   useEffect(() => console.log(projectData), [projectData]);
+  useEffect(() => {
+    const lastStep = 6;
+    if (step !== lastStep) return;
+    async function sendRequest() {
+      let project = await createProject(projectData);
+      console.log(project);
+    }
+
+    sendRequest()
+      .then((response) => {
+        setProjectSuccessfullyCreated(response.success);
+      })
+      .catch((_) => {
+        setProjectSuccessfullyCreated(false);
+      });
+  }, [step]);
 
   const componentsDictionary = [
     <ProjectInfoView
@@ -46,8 +69,21 @@ export default function NewProject() {
     />,
     <ProjectMembersAdditionView
       updateProjectData={updateProjectData}
+      goToNextStep={() => setStep(6)}
       goToPreviousStep={goToPreviousStep}
     />,
+    <div>
+      {projectSuccessfullyCreated === true && (
+        <ProjectSuccessfullyCreatedMessage projectData={projectData} />
+      )}
+      {projectSuccessfullyCreated === false && <ProjectCreationFailedMessage />}
+      {projectSuccessfullyCreated === null && (
+        <h3 className="text-center scroll-m-20 text-2xl tracking-tight max-w-md">
+          Tu proyecto está en proceso de crearse, aguarda un momento y no salgas
+          de esta página, por favor :)
+        </h3>
+      )}
+    </div>,
   ];
 
   return (
@@ -68,3 +104,5 @@ export default function NewProject() {
     </main>
   );
 }
+
+// NewProject.requireAuth = true;

@@ -19,14 +19,14 @@ export function ProjectInfoView({ goToNextStep, updateProjectData }) {
     resolver: zodResolver(projectInitialSchema),
     mode: "onChange",
     defaultValues: {
-      projectName: "",
-      projectPrefix: "",
+      name: "",
+      prefix: "",
     },
   });
 
   useEffect(() => {
-    const { projectName } = formProjectInitial.getValues();
-    let words = projectName.split(" ");
+    const { name } = formProjectInitial.getValues();
+    let words = name.split(" ");
     let prefix = words.at(0).substring(0, 3);
     words = words.filter((word) => word.length > 0);
 
@@ -40,8 +40,8 @@ export function ProjectInfoView({ goToNextStep, updateProjectData }) {
     }
 
     prefix = prefix.toUpperCase();
-    formProjectInitial.setValue("projectPrefix", prefix);
-  }, [formProjectInitial.watch("projectName")]);
+    formProjectInitial.setValue("prefix", prefix);
+  }, [formProjectInitial.watch("name")]);
 
   const onSubmit = (values) => {
     updateProjectData(values);
@@ -61,7 +61,7 @@ export function ProjectInfoView({ goToNextStep, updateProjectData }) {
           >
             <FormField
               control={formProjectInitial.control}
-              name="projectName"
+              name="name"
               render={({ field }) => (
                 <FormItem className="mb-6">
                   <FormLabel>Nombre del proyecto</FormLabel>
@@ -74,7 +74,7 @@ export function ProjectInfoView({ goToNextStep, updateProjectData }) {
             />
             <FormField
               control={formProjectInitial.control}
-              name="projectPrefix"
+              name="prefix"
               render={({ field }) => (
                 <FormItem className="mb-6">
                   <FormLabel>Prefijo identificador</FormLabel>

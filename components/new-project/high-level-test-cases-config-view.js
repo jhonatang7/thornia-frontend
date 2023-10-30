@@ -88,7 +88,7 @@ export function HighLevelTestCasesConfigView({
       return;
     }
 
-    updateProjectData({ hltcFields: fields });
+    updateProjectData({ configurationHLTC: fields });
     goToNextStep();
   };
 

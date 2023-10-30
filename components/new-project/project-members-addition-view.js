@@ -7,6 +7,7 @@ import * as zod from "zod";
 
 export function ProjectMembersAdditionView({
   goToPreviousStep,
+  goToNextStep,
   updateProjectData,
 }) {
   const [memberEmails, setMemberEmails] = useState([]);
@@ -14,8 +15,8 @@ export function ProjectMembersAdditionView({
   const [alreadyExists, setAlreadyExists] = useState(false);
 
   const onSubmit = () => {
-    updateProjectData({ members: memberEmails });
-    // goToNextStep();
+    updateProjectData({ memberEmails: memberEmails });
+    goToNextStep();
   };
 
   const handleOnChange = (e) => {
