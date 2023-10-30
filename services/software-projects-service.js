@@ -23,7 +23,9 @@ export async function createProject(project) {
 
     if (response.ok) {
       let project = await response.json();
-      return project;
-    }
-  } catch (error) {}
+      return { success: true, project: project };
+    } else return { success: false };
+  } catch (error) {
+    return { success: false };
+  }
 }
