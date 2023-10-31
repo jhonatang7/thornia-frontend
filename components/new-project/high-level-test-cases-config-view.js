@@ -18,6 +18,7 @@ import { highLevelTestCasesDefaultValues } from "./artifacts-default-values";
 export function HighLevelTestCasesConfigView({
   goToNextStep,
   updateProjectData,
+  goToPreviousStep,
 }) {
   const { toast } = useToast();
   const [fields, setFields] = useState(highLevelTestCasesDefaultValues);
@@ -87,7 +88,7 @@ export function HighLevelTestCasesConfigView({
       return;
     }
 
-    updateProjectData({ hltcFields: fields });
+    updateProjectData({ configurationHLTC: fields });
     goToNextStep();
   };
 
@@ -125,7 +126,9 @@ export function HighLevelTestCasesConfigView({
           </Table>
         </CardContent>
         <CardFooter className="flex justify-between p-2">
-          <Button variant="subtle">Atrás</Button>
+          <Button variant="subtle" onClick={goToPreviousStep}>
+            Atrás
+          </Button>
           <div>
             <Button variant="outline" className="mr-2" onClick={addField}>
               {/* <Plus className="mr-2 h-4" /> */}

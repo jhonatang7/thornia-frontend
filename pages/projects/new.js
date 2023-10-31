@@ -1,45 +1,89 @@
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import { ProjectInitial } from "@/components/new-project/project-initial";
+import { ProjectInfoView } from "@/components/new-project/project-info-view";
 import { IntroductionStatesMaps } from "@/components/new-project/introduction-states-maps";
 import { useEffect, useState } from "react";
 import { LowLevelTestCasesConfigView } from "@/components/new-project/low-level-test-cases-config-view";
 import { HighLevelTestCasesConfigView } from "@/components/new-project/high-level-test-cases-config-view";
 import { BugsConfigView } from "@/components/new-project/bugs-config-view";
 import { ProjectMembersAdditionView } from "@/components/new-project/project-members-addition-view";
+import { createProject } from "@/services/software-projects-service";
+import {
+  ProjectCreationFailedMessage,
+  ProjectSuccessfullyCreatedMessage,
+} from "@/components/new-project/project-creation-completed-message";
 
 export default function NewProject() {
   const [step, setStep] = useState(0);
   const [projectData, setProjectData] = useState({});
+  const [projectSuccessfullyCreated, setProjectSuccessfullyCreated] =
+    useState(null);
+
+  const goToPreviousStep = () => {
+    setStep(step - 1);
+  };
 
   const updateProjectData = (newData) => {
     setProjectData({ ...projectData, ...newData });
   };
 
   useEffect(() => console.log(projectData), [projectData]);
+  useEffect(() => {
+    const lastStep = 6;
+    if (step !== lastStep) return;
+    async function sendRequest() {
+      let project = await createProject(projectData);
+      console.log(project);
+    }
+
+    sendRequest()
+      .then((response) => {
+        setProjectSuccessfullyCreated(response.success);
+      })
+      .catch((_) => {
+        setProjectSuccessfullyCreated(false);
+      });
+  }, [step]);
 
   const componentsDictionary = [
-    <ProjectInitial
+    <ProjectInfoView
       goToNextStep={() => setStep(1)}
       updateProjectData={updateProjectData}
     />,
     <LowLevelTestCasesConfigView
       goToNextStep={() => setStep(2)}
       updateProjectData={updateProjectData}
+      goToPreviousStep={goToPreviousStep}
     />,
     <HighLevelTestCasesConfigView
       goToNextStep={() => setStep(3)}
       updateProjectData={updateProjectData}
+      goToPreviousStep={goToPreviousStep}
     />,
     <BugsConfigView
       goToNextStep={() => setStep(4)}
       updateProjectData={updateProjectData}
+      goToPreviousStep={goToPreviousStep}
     />,
-    <IntroductionStatesMaps goToNextStep={() => setStep(5)} />,
+    <IntroductionStatesMaps
+      goToNextStep={() => setStep(5)}
+      goToPreviousStep={goToPreviousStep}
+    />,
     <ProjectMembersAdditionView
-      goToNextStep={() => setStep(6)}
       updateProjectData={updateProjectData}
+      goToNextStep={() => setStep(6)}
+      goToPreviousStep={goToPreviousStep}
     />,
+    <div>
+      {projectSuccessfullyCreated === true && (
+        <ProjectSuccessfullyCreatedMessage projectData={projectData} />
+      )}
+      {projectSuccessfullyCreated === false && <ProjectCreationFailedMessage />}
+      {projectSuccessfullyCreated === null && (
+        <h3 className="text-center scroll-m-20 text-2xl tracking-tight max-w-md">
+          Tu proyecto está en proceso de crearse, aguarda un momento y no salgas
+          de esta página, por favor :)
+        </h3>
+      )}
+    </div>,
   ];
 
   return (
@@ -60,3 +104,5 @@ export default function NewProject() {
     </main>
   );
 }
+
+// NewProject.requireAuth = true;

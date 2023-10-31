@@ -8,6 +8,7 @@ export const sessionStorageKeys = {
 
 export function saveToLocalStorage(key, value) {
   if (typeof key === "string" && typeof value === "string") {
+    removeFromLocalStorage(key);
     localStorage.setItem(key, value);
   }
 }

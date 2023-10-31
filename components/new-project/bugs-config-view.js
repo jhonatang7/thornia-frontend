@@ -15,7 +15,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { bugsDefaultValues } from "./artifacts-default-values";
 
-export function BugsConfigView({ goToNextStep, updateProjectData }) {
+export function BugsConfigView({
+  goToNextStep,
+  updateProjectData,
+  goToPreviousStep,
+}) {
   const { toast } = useToast();
   const [fields, setFields] = useState(bugsDefaultValues);
 
@@ -84,7 +88,7 @@ export function BugsConfigView({ goToNextStep, updateProjectData }) {
       return;
     }
 
-    updateProjectData({ bugFields: fields });
+    updateProjectData({ configurationBugs: fields });
     goToNextStep();
   };
 
@@ -122,7 +126,9 @@ export function BugsConfigView({ goToNextStep, updateProjectData }) {
           </Table>
         </CardContent>
         <CardFooter className="flex justify-between p-2">
-          <Button variant="subtle">Atrás</Button>
+          <Button variant="subtle" onClick={goToPreviousStep}>
+            Atrás
+          </Button>
           <div>
             <Button variant="outline" className="mr-2" onClick={addField}>
               {/* <Plus className="mr-2 h-4" /> */}

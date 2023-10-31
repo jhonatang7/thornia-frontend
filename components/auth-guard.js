@@ -11,9 +11,9 @@ export function AuthGuard({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (isInitializing) return;
+    // if (isInitializing) return;
+    saveToSessionStorage(sessionStorageKeys.signInRedirectUrl, router.route);
     if (!isAuthenticated) {
-      saveToSessionStorage(sessionStorageKeys.signInRedirectUrl);
       router.push("/signin");
     }
   }, [isInitializing, isAuthenticated, user]);
