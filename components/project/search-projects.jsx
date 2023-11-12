@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export function SearchProjects({ projects, setSearchedProjects }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,10 +44,12 @@ export function SearchProjects({ projects, setSearchedProjects }) {
         </Button>
       </div>
 
-      <Button>
-        <Plus className="h-4 w-4" />
-        Crear Proyecto
-      </Button>
+      <Link href="/projects/new" passHref legacyBehavior>
+        <Button>
+          <Plus className="h-4 w-4" />
+          Crear Proyecto
+        </Button>
+      </Link>
     </div>
   );
 }

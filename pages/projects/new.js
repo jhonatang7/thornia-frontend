@@ -30,12 +30,13 @@ export default function NewProject() {
     const lastStep = 6;
     if (step !== lastStep) return;
     async function sendRequest() {
-      let project = await createProject(projectData);
-      console.log(project);
+      let response = await createProject(projectData);
+      return response;
     }
 
     sendRequest()
       .then((response) => {
+        console.log(response.success);
         setProjectSuccessfullyCreated(response.success);
       })
       .catch((_) => {
@@ -91,7 +92,7 @@ export default function NewProject() {
       <div className="flex my-12">
         <div className="basis-[10%]" />
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          Paso {step + 1}/6
+          Paso {step + 1}/7
         </h3>
         <h1 className="basis-[70%] text-end scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
           Nuevo proyecto
@@ -105,4 +106,4 @@ export default function NewProject() {
   );
 }
 
-// NewProject.requireAuth = true;
+NewProject.requireAuth = true;

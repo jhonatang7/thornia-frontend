@@ -10,19 +10,21 @@ export async function getAllProjectsByUser() {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${getFromLocalStorage(localStorageKeys.token)}`,
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
         },
       }
     );
     return {
-        success: response.ok,
-        payload: await response.json(),
+      success: response.ok,
+      payload: await response.json(),
     };
   } catch (error) {
     return {
-        success: false,
-        payload: [],
-    }
+      success: false,
+      payload: [],
+    };
   }
 }
 
@@ -41,7 +43,7 @@ export async function createProject(project) {
         body: JSON.stringify(project),
       }
     );
-
+    console.log(response);
     if (response.ok) {
       let project = await response.json();
       return { success: true, project: project };
