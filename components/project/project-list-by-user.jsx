@@ -11,9 +11,11 @@ import { getAllProjectsByUser } from "@/services/software-projects-service";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/router";
 
 export function ProjectListByUser({ projects, setProjects, searchedProjects }) {
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
   const { toast } = useToast();
 
   const projectList = async () => {
@@ -54,7 +56,8 @@ export function ProjectListByUser({ projects, setProjects, searchedProjects }) {
               ? searchedProjects.map((project, index) => (
                   <TableRow
                     onClick={() => {
-                      console.log("a");
+                      console.log(project);
+                      router.push(`/projects/${project.id}`);
                     }}
                     className="cursor-pointer"
                     key={index}
@@ -67,7 +70,8 @@ export function ProjectListByUser({ projects, setProjects, searchedProjects }) {
               : projects.map((project, index) => (
                   <TableRow
                     onClick={() => {
-                      console.log("a");
+                      console.log(project);
+                      router.push(`/projects/${project.id}`);
                     }}
                     className="cursor-pointer"
                     key={index}

@@ -52,3 +52,26 @@ export async function createProject(project) {
     return { success: false };
   }
 }
+
+export async function getProject(projectId) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/projects/${projectId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      let project = await response.json();
+      return { success: true, project: project };
+    } else return { success: false };
+  } catch (error) {
+    return { success: false };
+  }
+}
