@@ -11,20 +11,26 @@ import {
 import { useEffect, useState } from "react";
 
 export function TimeArtifactField({ field, updateArtifact }) {
-  const onBlur = (e) => {
-    console.log(e.target.value);
+  const [value, setValue] = useState({});
+
+  const handleChange = (newValue, input) => {
+    setValue({ ...value, [input]: newValue });
   };
+
+  useEffect(() => {
+    updateArtifact({ key: field.key, value: value });
+  }, [value]);
 
   return (
     <div className="flex flex-row items-center space-x-3">
       <p className="font-semibold">{field.key}</p>
       <Input
-        onBlur={onBlur}
+        onBlur={(e) => handleChange(e.target.value, "quantity")}
         type="number"
         placeholder="0"
         className="h-auto px-2 py-1"
       />
-      <Select>
+      <Select onValueChange={(e) => handleChange(e, "unit")}>
         <SelectTrigger className="w-fit py-1 px-2 h-auto space-x-1">
           <SelectValue placeholder="Unidad" />
         </SelectTrigger>
