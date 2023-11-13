@@ -15,7 +15,7 @@ export function ArtifactView({ config, artifactId, type, project }) {
   const [getArtifactReqStatus, setGetArtifactReqStatus] = useState(null);
   const [artifactFields, setArtifactFields] = useState(null);
 
-  useEffect(() => configArtifactFields(), [artifact, artifactId]);
+  useEffect(() => configArtifactFields(), [artifact, artifactId, config]);
 
   const configArtifactFields = () => {
     if (artifact === null) return;
@@ -45,6 +45,9 @@ export function ArtifactView({ config, artifactId, type, project }) {
   };
 
   useEffect(() => {
+    setGetArtifactReqStatus(null);
+    setArtifact(null);
+    setArtifactFields(null);
     async function requestArtifact() {
       let { success, payload } = await getArtifact(
         artifactId,
@@ -58,9 +61,9 @@ export function ArtifactView({ config, artifactId, type, project }) {
     }
 
     requestArtifact();
-  }, []);
+  }, [artifactId, type]);
 
-  return artifact && artifactFields ? (
+  return artifact && artifactFields && getArtifactReqStatus === true ? (
     <div className="grow py-8 px-5">
       <div className="flex flex-col max-w-lg md:max-w-xl md:m-auto sm:px-16 space-y-4">
         <div>
