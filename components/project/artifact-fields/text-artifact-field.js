@@ -1,6 +1,6 @@
 import { Textarea } from "@/components/ui/textarea";
 
-export function TextArtifactField({ field, updateArtifact }) {
+export function TextArtifactField({ field, updateArtifact, value, disabled }) {
   const handleChange = (e) => {
     updateArtifact({ key: field.key, value: e.target.value });
   };
@@ -11,6 +11,9 @@ export function TextArtifactField({ field, updateArtifact }) {
       <Textarea
         placeholder={"Escribe tu(s) " + field.key.toLowerCase()}
         onBlur={handleChange}
+        defaultValue={value}
+        disabled={disabled}
+        className="disabled:cursor-text disabled:opacity-80"
       />
     </div>
   );

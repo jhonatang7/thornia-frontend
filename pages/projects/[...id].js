@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { getProject } from "@/services/software-projects-service";
 import { ArtifactView } from "@/components/project/artifact-view";
 import { Toaster } from "@/components/ui/toaster";
+import { newArtifactPages } from "@/components/project/new-artifact-pages";
 
 export default function ProjectById() {
   const router = useRouter();
@@ -31,34 +32,15 @@ export default function ProjectById() {
     sidebarButtonRef.current.classList.toggle("hidden");
   };
 
-  const projectPages =
+  const projectPages = project === null ? null : newArtifactPages(project);
+
+  const configByType =
     project === null
       ? null
       : {
-          newhltc: (
-            <NewArtifact
-              project={project}
-              config={project.configurationHLTC}
-              type="HLTC"
-              title="Caso de Prueba de Alto Nivel"
-            />
-          ),
-          newlltc: (
-            <NewArtifact
-              project={project}
-              config={project.configurationLLTC}
-              type="LLTC"
-              title="Caso de Prueba de Bajo Nivel"
-            />
-          ),
-          newbug: (
-            <NewArtifact
-              project={project}
-              config={project.configurationBugs}
-              type="BUG"
-              title="Error (bug)"
-            />
-          ),
+          hltc: project.configurationHLTC,
+          lltc: project.configurationLLTC,
+          bug: project.configurationBugs,
         };
 
   return !router.isReady || projectRequestStatus === null ? (
@@ -82,12 +64,15 @@ export default function ProjectById() {
           showSidebar={showSidebar}
           toggleSidebarButtonVisibility={toggleSidebarButtonVisibility}
           projectId={router.query.id[0]}
+          project={project}
         />
         {router.query.id.length == 2 && projectPages[router.query.id.at(1)]}
         {router.query.item && router.query.type && (
           <ArtifactView
             artifactId={router.query.item}
             type={router.query.type}
+            config={configByType[router.query.type]}
+            project={project}
           />
         )}
       </div>

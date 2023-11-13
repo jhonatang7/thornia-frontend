@@ -14,12 +14,12 @@ import { useRouter } from "next/router";
 export function NewArtifact({ project, config, title, type }) {
   const router = useRouter();
   const [creationStatus, setCreationStatus] = useState("initial");
+  const { toast } = useToast();
   const [artifactFields, setArtifact] = useState(
     config.map((i) => {
       return { key: i.key, value: "" };
     })
   );
-  const { toast } = useToast();
 
   useEffect(() => {
     let oldTitle = artifactFields[0];

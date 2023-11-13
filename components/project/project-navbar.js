@@ -19,6 +19,7 @@ export function ProjectNavBar({
   showSidebar,
   toggleSidebarButtonVisibility,
   projectId,
+  project,
 }) {
   const sidebarRef = useRef(null);
 
@@ -50,7 +51,7 @@ export function ProjectNavBar({
           <PopoverTrigger className="w-full space-x-2 hover:bg-accent hover:text-accent-foreground border-slate-200 inline-flex items-center justify-start rounded-md text-sm font-medium ring-offset-background border border-input bg-background h-10 px-4 py-2">
             <ChevronsUpDown className="w-4 h-4" />
             <span>v0.1.3</span>
-            <span>Nombre del proyecto</span>
+            <span>{project.name}</span>
           </PopoverTrigger>
           <PopoverContent>Place content for the popover here.</PopoverContent>
         </Popover>

@@ -1,6 +1,11 @@
 import { Input } from "@/components/ui/input";
 
-export function NumericArtifactField({ field, updateArtifact }) {
+export function NumericArtifactField({
+  field,
+  updateArtifact,
+  value,
+  disabled,
+}) {
   const handleChange = (e) => {
     updateArtifact({ key: field.key, value: e.target.value });
   };
@@ -11,8 +16,10 @@ export function NumericArtifactField({ field, updateArtifact }) {
       <Input
         type="number"
         placeholder="0"
-        className="h-auto px-2 py-1"
+        className="h-auto px-2 py-1 disabled:opacity-80 disabled:cursor-text"
         onBlur={handleChange}
+        defaultValue={value}
+        disabled={disabled}
       />
     </div>
   );
