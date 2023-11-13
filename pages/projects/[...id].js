@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { getProject } from "@/services/software-projects-service";
+import { ArtifactView } from "@/components/project/artifact-view";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function ProjectById() {
   const router = useRouter();
@@ -37,6 +39,7 @@ export default function ProjectById() {
             <NewArtifact
               project={project}
               config={project.configurationHLTC}
+              type="HLTC"
               title="Caso de Prueba de Alto Nivel"
             />
           ),
@@ -44,6 +47,7 @@ export default function ProjectById() {
             <NewArtifact
               project={project}
               config={project.configurationLLTC}
+              type="LLTC"
               title="Caso de Prueba de Bajo Nivel"
             />
           ),
@@ -51,6 +55,7 @@ export default function ProjectById() {
             <NewArtifact
               project={project}
               config={project.configurationBugs}
+              type="BUG"
               title="Error (bug)"
             />
           ),
@@ -79,7 +84,14 @@ export default function ProjectById() {
           projectId={router.query.id[0]}
         />
         {router.query.id.length == 2 && projectPages[router.query.id.at(1)]}
+        {router.query.item && router.query.type && (
+          <ArtifactView
+            artifactId={router.query.item}
+            type={router.query.type}
+          />
+        )}
       </div>
+      <Toaster />
     </>
   );
 }
