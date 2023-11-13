@@ -58,3 +58,27 @@ export async function createArtifact(artifact) {
     return { success: false };
   }
 }
+
+export async function getArtifact(id, type) {
+  try {
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/artifact/${id}?type=${type}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+      }
+    );
+    if (response.ok) {
+      let artifact = await response.json();
+      return { success: true, payload: artifact };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    return { success: false };
+  }
+}

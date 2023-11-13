@@ -1,4 +1,10 @@
-import { ChevronRight, ChevronDown, Plus, RefreshCcw } from "lucide-react";
+import {
+  ChevronRight,
+  ChevronDown,
+  Plus,
+  RefreshCcw,
+  Loader2,
+} from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,7 +22,7 @@ export function ArtifactCollapsible({
   dataArtifact,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [artifactData, setArtifactData] = useState([]);
+  const [artifactData, setArtifactData] = useState(null);
   const collapsibleRef = useRef(null);
 
   const getStatusColor = (status) => {
@@ -40,21 +46,23 @@ export function ArtifactCollapsible({
     setIsExpanded(!isExpanded);
   };
 
-  const artifactsList = async () => {
-    if (artifactData.length === 0) {
+  const requestArtifacts = async () => {
+    if (artifactData === null) {
       const { success, payload } = await getArtifacts(dataArtifact);
+      console.log(payload);
       if (success) setArtifactData(payload);
     }
   };
 
   const refreshArtifactList = async () => {
+    setArtifactData(null);
     const { success, payload } = await getArtifacts(dataArtifact);
     if (success) setArtifactData(payload);
   };
 
   useEffect(() => {
     if (isExpanded) {
-      artifactsList();
+      requestArtifacts();
     }
   }, [isExpanded]);
 
@@ -80,26 +88,40 @@ export function ArtifactCollapsible({
         />
       </div>
       <CollapsibleContent>
-        {artifactData.length === 0 ? (
-          <h4>
-            Yes. Free to use for personal and commercial projects. No
-            attribution required.
-          </h4>
+        {artifactData === null ? (
+          <p>Cargando...</p>
+        ) : artifactData.length === 0 ? (
+          <p>
+            El proyecto aún no tiene {label.toLowerCase()}, agrega uno para
+            empezar
+          </p>
         ) : (
           <div className="mt-2">
             {artifactData.map((artifact, index) => (
-              <div
+              <Link
                 key={artifact.id}
-                index={index}
-                className="flex items-center border rounded-md text-sm font-medium px-1.5 py-1 h-min w-full justify-start cursor-pointer hover:bg-accent"
+                href={{
+                  pathname: `/projects/${dataArtifact.projectId}`,
+                  query: {
+                    item: artifact.id,
+                    type: dataArtifact.type.toLowerCase(),
+                  },
+                }}
+                legacyBehavior
+                passHref
               >
                 <div
-                  className={`w-3 h-3 rounded-full ${getStatusColor(
-                    artifact.parameterArtifact.Estado
-                  )} ml-1 mr-2`}
-                ></div>
-                <label>{artifact.parameterArtifact.Título}</label>
-              </div>
+                  index={index}
+                  className="flex border rounded-md text-sm font-medium px-1.5 py-1 h-min w-full justify-start cursor-pointer hover:bg-accent"
+                >
+                  <div
+                    className={`w-3 h-3 aspect-square rounded-full ${getStatusColor(
+                      artifact.parameterArtifact.Estado
+                    )} ml-1 mr-2 mt-1`}
+                  ></div>
+                  <label>{artifact.parameterArtifact.Título}</label>
+                </div>
+              </Link>
             ))}
           </div>
         )}
