@@ -21,6 +21,11 @@ export function ProjectNavBar({
   projectId,
 }) {
   const sidebarRef = useRef(null);
+  const typeArtifact = {
+    LLTC: "LLTC",
+    HLTC: "HLTC",
+    Bug: "Bug"
+  };
 
   useEffect(() => toggleSidebar(), [showSidebar]);
 
@@ -76,18 +81,21 @@ export function ProjectNavBar({
         iconPath={mdiTestTubeEmpty}
         label="Casos de Prueba de Bajo Nivel"
         newArtifactPath={"/projects/" + projectId + "/newlltc"}
+        dataArtifact= {{projectId, type: typeArtifact.LLTC}}
       />
 
       <ArtifactCollapsible
         iconPath={mdiTestTubeEmpty}
         label="Casos de Prueba de Alto Nivel"
         newArtifactPath={"/projects/" + projectId + "/newhltc"}
+        dataArtifact= {{projectId, type: typeArtifact.HLTC}}
       />
 
       <ArtifactCollapsible
         iconPath={mdiBugOutline}
         label="Errores (bugs)"
         newArtifactPath={"/projects/" + projectId + "/newbug"}
+        dataArtifact= {{projectId, type: typeArtifact.Bug}}
       />
     </div>
   );

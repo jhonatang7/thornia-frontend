@@ -27,7 +27,7 @@ export function SelectionArtifactField({ field, updateArtifact }) {
             <SelectLabel>{field.key}</SelectLabel>
             {field.options.map((opt, index) => (
               <SelectItem
-                value={opt.toLowerCase().replace(" ", "-")}
+                value={opt}
                 key={opt + index}
               >
                 {opt}
