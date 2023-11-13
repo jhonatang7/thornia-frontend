@@ -8,11 +8,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function SelectionArtifactField({ field }) {
+export function SelectionArtifactField({ field, updateArtifact }) {
+  const handleChange = (value) => {
+    updateArtifact({ key: field.key, value: value });
+  };
+
   return (
     <div className="flex flex-row items-center space-x-3">
       <p className="font-semibold">{field.key}</p>
-      <Select>
+      <Select onValueChange={handleChange}>
         <SelectTrigger className="w-fit py-1 px-2 h-auto space-x-1">
           <SelectValue
             placeholder={"Selecciona un(a) " + field.key.toLowerCase()}
