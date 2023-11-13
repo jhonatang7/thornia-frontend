@@ -1,4 +1,4 @@
-import { ChevronRight, ChevronDown, Plus } from "lucide-react";
+import { ChevronRight, ChevronDown, Plus, RefreshCcw } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -21,18 +21,18 @@ export function ArtifactCollapsible({
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Pendiente':
-        return 'bg-gray-400';
-      case 'Aprobado':
-        return 'bg-green-500';
-      case 'Fallido':
-        return 'bg-red-600';
-      case 'En progreso':
-        return 'bg-blue-800';
-      case 'Resuelto':
-        return 'bg-green-500';
+      case "Pendiente":
+        return "bg-gray-400";
+      case "Aprobado":
+        return "bg-green-500";
+      case "Fallido":
+        return "bg-red-600";
+      case "En progreso":
+        return "bg-blue-800";
+      case "Resuelto":
+        return "bg-green-500";
       default:
-        return 'bg-gray-400';
+        return "bg-gray-400";
     }
   };
 
@@ -43,9 +43,13 @@ export function ArtifactCollapsible({
   const artifactsList = async () => {
     if (artifactData.length === 0) {
       const { success, payload } = await getArtifacts(dataArtifact);
-      console.log(payload);
       if (success) setArtifactData(payload);
     }
+  };
+
+  const refreshArtifactList = async () => {
+    const { success, payload } = await getArtifacts(dataArtifact);
+    if (success) setArtifactData(payload);
   };
 
   useEffect(() => {
@@ -70,6 +74,10 @@ export function ArtifactCollapsible({
         <Link href={newArtifactPath} passHref legacyBehavior>
           <Plus className="w-5 h-5 cursor-pointer rounded-sm hover:bg-accent text-muted-foreground" />
         </Link>
+        <RefreshCcw
+          className="w-5 h-5 cursor-pointer rounded-sm hover:bg-accent text-muted-foreground"
+          onClick={refreshArtifactList}
+        />
       </div>
       <CollapsibleContent>
         {artifactData.length === 0 ? (
@@ -80,12 +88,18 @@ export function ArtifactCollapsible({
         ) : (
           <div className="mt-2">
             {artifactData.map((artifact, index) => (
-            <div className="flex items-center border rounded-md text-sm font-medium px-1.5 py-1 h-min w-full justify-start cursor-pointer hover:bg-accent">
-              <div className={`w-3 h-3 rounded-full ${getStatusColor(artifact.parameterArtifact.status)} mr-1`}></div>
-              <label key={artifact.id} index={index}>
-                {artifact.parameterArtifact.title}
-              </label>
-            </div>
+              <div
+                key={artifact.id}
+                index={index}
+                className="flex items-center border rounded-md text-sm font-medium px-1.5 py-1 h-min w-full justify-start cursor-pointer hover:bg-accent"
+              >
+                <div
+                  className={`w-3 h-3 rounded-full ${getStatusColor(
+                    artifact.parameterArtifact.Estado
+                  )} ml-1 mr-2`}
+                ></div>
+                <label>{artifact.parameterArtifact.Título}</label>
+              </div>
             ))}
           </div>
         )}
