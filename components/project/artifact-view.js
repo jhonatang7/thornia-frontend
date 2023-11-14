@@ -1,19 +1,18 @@
 import { Button } from "../ui/button";
-import { SelectionArtifactField } from "./artifact-fields/selection-artifact-field";
-import { MemberArtifactField } from "./artifact-fields/member-artifact-field";
-import { TextArtifactField } from "./artifact-fields/text-artifact-field";
-import { NumericArtifactField } from "./artifact-fields/numeric-artifact-field";
-import { TimeArtifactField } from "./artifact-fields/time-artifact-field";
 import { TitleArtifactField } from "./artifact-fields/title-artifact-field";
-import { Loader2 } from "lucide-react";
-import { getArtifact } from "@/services/artifact-service";
+import { Loader2, CheckCircle, AlertCircle, X } from "lucide-react";
+import { getArtifact, updateArtifact } from "@/services/artifact-service";
 import { useEffect, useState } from "react";
+import { ArtifactViewForm } from "./artifact-view-form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export function ArtifactView({ config, artifactId, type, project }) {
+  const [editionSuccess, setEditionSuccess] = useState(null);
   const [editing, setEditing] = useState(false);
   const [artifact, setArtifact] = useState(null);
   const [getArtifactReqStatus, setGetArtifactReqStatus] = useState(null);
   const [artifactFields, setArtifactFields] = useState(null);
+  const [manipulableConfig, setManipulableConfig] = useState(config);
 
   useEffect(() => configArtifactFields(), [artifact, artifactId, config]);
 
@@ -23,10 +22,19 @@ export function ArtifactView({ config, artifactId, type, project }) {
       return { key: i.key, value: artifact.parameterArtifact[i.key] };
     });
 
+    setManipulableConfig([...config].slice(0, 1));
     setArtifactFields(newArtifactFields);
   };
 
+  useEffect(() => {
+    if (manipulableConfig.length === 1) {
+      let configAux = [...config];
+      setManipulableConfig(configAux);
+    }
+  }, [manipulableConfig]);
+
   const updateArtifactFields = (field) => {
+    console.log("called");
     let newArtifact = [...artifactFields];
     let fieldIndex = newArtifact.findIndex((e) => e.key === field.key);
     newArtifact[fieldIndex] = field;
@@ -34,14 +42,25 @@ export function ArtifactView({ config, artifactId, type, project }) {
     setArtifactFields(newArtifact);
   };
 
-  const updateArtifact = () => {
+  const saveEditedArtifact = async () => {
     let newArtifactFields = [...artifactFields];
     let newArtifact = { ...artifact };
     newArtifactFields.forEach((field) => {
-      newArtifact[field.key] = field.value;
+      newArtifact.parameterArtifact[field.key] = field.value;
     });
-    console.log(newArtifact);
-    setArtifact(newArtifact);
+
+    let { success } = await updateArtifact(
+      newArtifact.id,
+      newArtifact.parameterArtifact,
+      type.toUpperCase()
+    );
+
+    setEditionSuccess(success);
+    if (success) {
+      setArtifact(newArtifact);
+    } else {
+      configArtifactFields();
+    }
   };
 
   useEffect(() => {
@@ -65,65 +84,68 @@ export function ArtifactView({ config, artifactId, type, project }) {
 
   return artifact && artifactFields && getArtifactReqStatus === true ? (
     <div className="grow py-8 px-5">
-      <div className="flex flex-col max-w-lg md:max-w-xl md:m-auto sm:px-16 space-y-4">
+      <div className="flex flex-col max-w-lg md:max-w-2xl md:m-auto sm:px-16 space-y-4">
+        {editionSuccess === true && (
+          <Alert>
+            <CheckCircle className="h-4 w-4" />
+            <AlertTitle>¡Cambios guardados!</AlertTitle>
+            <AlertDescription>
+              Tus cambios en
+              <span className="italic"> {artifactFields.at(0).value}</span> se
+              han guardado exitosamente
+              <Button
+                variant="secondary"
+                className="py-1.5 px-2 h-auto ml-2"
+                onClick={() => setEditionSuccess(null)}
+              >
+                Aceptar
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+        {editionSuccess === false && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error inesperado</AlertTitle>
+            <AlertDescription>
+              Ha ocurrido un error imprevisto mientras guardábamos tus cambios,
+              por favor inténtalo otra vez
+              <Button
+                variant="secondary"
+                className="py-1.5 px-2 h-auto ml-2 text-destructive"
+                onClick={() => setEditionSuccess(null)}
+              >
+                Cerrar
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
         <div>
           <TitleArtifactField
-            field={config.at(0)}
+            field={manipulableConfig.at(0)}
             updateArtifact={updateArtifactFields}
             value={artifactFields.at(0).value}
             disabled={!editing}
           />
         </div>
 
-        {config.slice(1).map((e, index) => (
-          <div key={e + index}>
-            {e.type === "member" && (
-              <MemberArtifactField
-                field={e}
-                members={project.memberIds}
-                updateArtifact={updateArtifactFields}
-                value={artifact.parameterArtifact[e.key]}
-                disabled={!editing}
-              />
-            )}
-
-            {e.type === "selection" && (
-              <SelectionArtifactField
-                field={e}
-                updateArtifact={updateArtifactFields}
-                value={artifact.parameterArtifact[e.key]}
-                disabled={!editing}
-              />
-            )}
-
-            {e.type === "text" && (
-              <TextArtifactField
-                field={e}
-                updateArtifact={updateArtifactFields}
-                value={artifact.parameterArtifact[e.key]}
-                disabled={!editing}
-              />
-            )}
-
-            {e.type === "numeric" && (
-              <NumericArtifactField
-                field={e}
-                updateArtifact={updateArtifactFields}
-                value={artifact.parameterArtifact[e.key]}
-                disabled={!editing}
-              />
-            )}
-
-            {e.type === "datetime" && (
-              <TimeArtifactField
-                field={e}
-                updateArtifact={updateArtifactFields}
-                defaultValue={artifact.parameterArtifact[e.key]}
-                disabled={!editing}
-              />
-            )}
-          </div>
-        ))}
+        {manipulableConfig.length === 1 ? (
+          <ArtifactViewForm
+            config={config}
+            editing={editing}
+            project={project}
+            updateArtifactFields={updateArtifactFields}
+            values={{}}
+          />
+        ) : (
+          <ArtifactViewForm
+            config={manipulableConfig}
+            editing={editing}
+            project={project}
+            updateArtifactFields={updateArtifactFields}
+            values={artifact.parameterArtifact}
+          />
+        )}
 
         <div className="flex flex-row justify-end space-x-2">
           {!editing && (
@@ -135,8 +157,8 @@ export function ArtifactView({ config, artifactId, type, project }) {
             <Button
               variant="ghost"
               onClick={() => {
-                setEditing(false);
                 configArtifactFields();
+                setEditing(false);
               }}
             >
               Cancelar
@@ -144,9 +166,9 @@ export function ArtifactView({ config, artifactId, type, project }) {
           )}
           {editing && (
             <Button
-              onClick={() => {
+              onClick={async () => {
                 setEditing(false);
-                updateArtifact();
+                await saveEditedArtifact();
               }}
             >
               Guardar

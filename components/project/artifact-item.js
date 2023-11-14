@@ -51,7 +51,7 @@ export function ArtifactItem({ artifact, type, projectId }) {
       >
         <div className="flex items-center">
           <div
-            className={`w-3 h-3 rounded-full ${getStatusColor(
+            className={`w-3 h-3 aspect-square rounded-full ${getStatusColor(
               artifact.parameterArtifact.Estado
             )} ml-1 mr-2`}
           ></div>

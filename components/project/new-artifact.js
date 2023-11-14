@@ -79,7 +79,7 @@ export function NewArtifact({ project, config, title, type }) {
 
   return (
     <div className="grow py-8 px-5">
-      <div className="flex flex-col max-w-lg md:max-w-xl md:m-auto sm:px-16 space-y-4">
+      <div className="flex flex-col max-w-lg md:max-w-2xl md:m-auto sm:px-16 space-y-4">
         <div>
           <p className="text-sm text-muted-foreground">Nuevo {title}</p>
           <TitleArtifactField
