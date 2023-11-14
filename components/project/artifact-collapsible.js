@@ -1,4 +1,10 @@
-import { ChevronRight, ChevronDown, Plus, RefreshCcw } from "lucide-react";
+import {
+  ChevronRight,
+  ChevronDown,
+  Plus,
+  RefreshCcw,
+  Loader2,
+} from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -19,28 +25,30 @@ export function ArtifactCollapsible({
   dataArtifact,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [artifactData, setArtifactData] = useState([]);
+  const [artifactData, setArtifactData] = useState(null);
   const collapsibleRef = useRef(null);
 
   const updateCollapsibleIcon = async () => {
     setIsExpanded(!isExpanded);
   };
 
-  const artifactsList = async () => {
-    if (artifactData.length === 0) {
+  const requestArtifacts = async () => {
+    if (artifactData === null) {
       const { success, payload } = await getArtifacts(dataArtifact);
+      console.log(payload);
       if (success) setArtifactData(payload);
     }
   };
 
   const refreshArtifactList = async () => {
+    setArtifactData(null);
     const { success, payload } = await getArtifacts(dataArtifact);
     if (success) setArtifactData(payload);
   };
 
   useEffect(() => {
     if (isExpanded) {
-      artifactsList();
+      requestArtifacts();
     }
   }, [isExpanded]);
 
@@ -66,22 +74,25 @@ export function ArtifactCollapsible({
         />
       </div>
       <CollapsibleContent>
-        {artifactData.length === 0 ? (
-          <h4>
-            Yes. Free to use for personal and commercial projects. No
-            attribution required.
-          </h4>
+        {artifactData === null ? (
+          <p>Cargando...</p>
+        ) : artifactData.length === 0 ? (
+          <p>
+            El proyecto aún no tiene {label.toLowerCase()}, agrega uno para
+            empezar
+          </p>
         ) : (
           <div className="mt-2">
             <ArtifactContext.Provider value={refreshArtifactList}>
-            {artifactData.map((artifact, index) => (
-              <ArtifactItem
-                key={artifact.id}
-                index={index}
-                artifact={artifact}
-                type={dataArtifact.type}
-              />
-            ))}
+              {artifactData.map((artifact, index) => (
+                <ArtifactItem
+                  key={artifact.id}
+                  index={index}
+                  artifact={artifact}
+                  type={dataArtifact.type}
+                  projectId={dataArtifact.projectId}
+                />
+              ))}
             </ArtifactContext.Provider>
           </div>
         )}

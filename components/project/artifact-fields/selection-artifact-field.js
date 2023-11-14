@@ -8,7 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function SelectionArtifactField({ field, updateArtifact }) {
+export function SelectionArtifactField({
+  field,
+  updateArtifact,
+  value,
+  disabled,
+}) {
   const handleChange = (value) => {
     updateArtifact({ key: field.key, value: value });
   };
@@ -16,8 +21,12 @@ export function SelectionArtifactField({ field, updateArtifact }) {
   return (
     <div className="flex flex-row items-center space-x-3">
       <p className="font-semibold">{field.key}</p>
-      <Select onValueChange={handleChange}>
-        <SelectTrigger className="w-fit py-1 px-2 h-auto space-x-1">
+      <Select
+        onValueChange={handleChange}
+        defaultValue={value}
+        disabled={disabled}
+      >
+        <SelectTrigger className="w-fit py-1 px-2 h-auto space-x-1 disabled:opacity-80 disabled:cursor-default">
           <SelectValue
             placeholder={"Selecciona un(a) " + field.key.toLowerCase()}
           />
@@ -26,10 +35,7 @@ export function SelectionArtifactField({ field, updateArtifact }) {
           <SelectGroup>
             <SelectLabel>{field.key}</SelectLabel>
             {field.options.map((opt, index) => (
-              <SelectItem
-                value={opt}
-                key={opt + index}
-              >
+              <SelectItem value={opt} key={opt + index}>
                 {opt}
               </SelectItem>
             ))}

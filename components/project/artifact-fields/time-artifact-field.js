@@ -10,8 +10,13 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 
-export function TimeArtifactField({ field, updateArtifact }) {
-  const [value, setValue] = useState({});
+export function TimeArtifactField({
+  field,
+  updateArtifact,
+  defaultValue,
+  disabled,
+}) {
+  const [value, setValue] = useState(defaultValue ? defaultValue : {});
 
   const handleChange = (newValue, input) => {
     setValue({ ...value, [input]: newValue });
@@ -28,10 +33,16 @@ export function TimeArtifactField({ field, updateArtifact }) {
         onBlur={(e) => handleChange(e.target.value, "quantity")}
         type="number"
         placeholder="0"
-        className="h-auto px-2 py-1"
+        className="h-auto px-2 py-1 disabled:opacity-80 disabled:cursor-text"
+        defaultValue={defaultValue ? defaultValue.quantity : undefined}
+        disabled={disabled}
       />
-      <Select onValueChange={(e) => handleChange(e, "unit")}>
-        <SelectTrigger className="w-fit py-1 px-2 h-auto space-x-1">
+      <Select
+        onValueChange={(e) => handleChange(e, "unit")}
+        defaultValue={defaultValue ? defaultValue.unit : undefined}
+        disabled={disabled}
+      >
+        <SelectTrigger className="w-fit py-1 px-2 h-auto space-x-1 disabled:opacity-80 disabled:cursor-default">
           <SelectValue placeholder="Unidad" />
         </SelectTrigger>
         <SelectContent>
