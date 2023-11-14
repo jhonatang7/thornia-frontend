@@ -82,3 +82,24 @@ export async function getArtifact(id, type) {
     return { success: false };
   }
 }
+
+export async function updateArtifact(id, artifactFields, type) {
+  try {
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/artifact/update/${id}?type=${type}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify(artifactFields),
+      }
+    );
+    return { success: response.ok };
+  } catch (error) {
+    return { success: false };
+  }
+}
