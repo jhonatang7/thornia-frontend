@@ -58,3 +58,29 @@ export async function createArtifact(artifact) {
     return { success: false };
   }
 }
+
+export async function deleteArtifact(artifactDTO) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/artifact/delete`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify(artifactDTO),
+      }
+    );
+
+    if (response.ok) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    return { success: false };
+  }
+}

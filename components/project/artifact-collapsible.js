@@ -4,10 +4,13 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, createContext } from "react";
 import Icon from "@mdi/react";
 import Link from "next/link";
 import { getArtifacts } from "@/services/artifact-service";
+import { ArtifactItem } from "./artifact-item";
+
+export const ArtifactContext = createContext();
 
 export function ArtifactCollapsible({
   iconPath,
@@ -18,23 +21,6 @@ export function ArtifactCollapsible({
   const [isExpanded, setIsExpanded] = useState(false);
   const [artifactData, setArtifactData] = useState([]);
   const collapsibleRef = useRef(null);
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Pendiente":
-        return "bg-gray-400";
-      case "Aprobado":
-        return "bg-green-500";
-      case "Fallido":
-        return "bg-red-600";
-      case "En progreso":
-        return "bg-blue-800";
-      case "Resuelto":
-        return "bg-green-500";
-      default:
-        return "bg-gray-400";
-    }
-  };
 
   const updateCollapsibleIcon = async () => {
     setIsExpanded(!isExpanded);
@@ -87,20 +73,16 @@ export function ArtifactCollapsible({
           </h4>
         ) : (
           <div className="mt-2">
+            <ArtifactContext.Provider value={refreshArtifactList}>
             {artifactData.map((artifact, index) => (
-              <div
+              <ArtifactItem
                 key={artifact.id}
                 index={index}
-                className="flex items-center border rounded-md text-sm font-medium px-1.5 py-1 h-min w-full justify-start cursor-pointer hover:bg-accent"
-              >
-                <div
-                  className={`w-3 h-3 rounded-full ${getStatusColor(
-                    artifact.parameterArtifact.Estado
-                  )} ml-1 mr-2`}
-                ></div>
-                <label>{artifact.parameterArtifact.Título}</label>
-              </div>
+                artifact={artifact}
+                type={dataArtifact.type}
+              />
             ))}
+            </ArtifactContext.Provider>
           </div>
         )}
       </CollapsibleContent>
