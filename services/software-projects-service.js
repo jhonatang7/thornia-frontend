@@ -75,3 +75,28 @@ export async function getProject(projectId) {
     return { success: false };
   }
 }
+
+export async function getMemberList(memberIds) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/projects/memberlist`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify(memberIds),
+      }
+    );
+
+    if (response.ok) {
+      let members = await response.json();
+      return { success: true, payload: members };
+    } else return { success: false };
+  } catch (error) {
+    return { success: false };
+  }
+}
