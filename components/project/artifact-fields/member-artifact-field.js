@@ -8,6 +8,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { ProjectMembersContext } from "@/components/providers/project-members-provider"
 
 export function MemberArtifactField({
   field,
@@ -17,6 +19,7 @@ export function MemberArtifactField({
   disabled,
 }) {
   const [value, setValue] = useState(defaultValue);
+  const memberList = useContext(ProjectMembersContext);
 
   const handleChange = (value) => {
     setValue(value);
@@ -37,9 +40,9 @@ export function MemberArtifactField({
         <SelectContent>
           <SelectGroup>
             <SelectLabel>{field.key}</SelectLabel>
-            {members.map((opt, index) => (
-              <SelectItem value={opt} key={opt + index}>
-                {opt}
+            {memberList.map((opt) => (
+              <SelectItem value={opt.id} key={opt.id}>
+                {opt.fullName}
               </SelectItem>
             ))}
           </SelectGroup>

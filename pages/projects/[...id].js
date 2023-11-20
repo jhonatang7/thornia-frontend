@@ -8,6 +8,7 @@ import { getProject } from "@/services/software-projects-service";
 import { ArtifactView } from "@/components/project/artifact-view";
 import { Toaster } from "@/components/ui/toaster";
 import { newArtifactPages } from "@/components/project/new-artifact-pages";
+import { ProjectsMembersProvider } from "@/components/providers/project-members-provider";
 
 export default function ProjectById() {
   const router = useRouter();
@@ -48,7 +49,7 @@ export default function ProjectById() {
       <Loader2 className="animate-spin m-auto" />
     </div>
   ) : (
-    <>
+    <ProjectsMembersProvider memberIds={project.memberIds}>
       <Button
         size="icon"
         className="absolute top-4 right-4 lg:hidden"
@@ -77,6 +78,6 @@ export default function ProjectById() {
         )}
       </div>
       <Toaster />
-    </>
+    </ProjectsMembersProvider>
   );
 }
