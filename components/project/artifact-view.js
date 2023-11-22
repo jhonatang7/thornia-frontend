@@ -83,97 +83,99 @@ export function ArtifactView({ config, artifactId, type, project }) {
   }, [artifactId, type]);
 
   return artifact && artifactFields && getArtifactReqStatus === true ? (
-    <div className="grow py-8 px-5">
-      <div className="flex flex-col max-w-lg md:max-w-2xl md:m-auto sm:px-16 space-y-4">
-        {editionSuccess === true && (
-          <Alert>
-            <CheckCircle className="h-4 w-4" />
-            <AlertTitle>¡Cambios guardados!</AlertTitle>
-            <AlertDescription>
-              Tus cambios en
-              <span className="italic"> {artifactFields.at(0).value}</span> se
-              han guardado exitosamente
-              <Button
-                variant="secondary"
-                className="py-1.5 px-2 h-auto ml-2"
-                onClick={() => setEditionSuccess(null)}
-              >
-                Aceptar
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
-        {editionSuccess === false && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error inesperado</AlertTitle>
-            <AlertDescription>
-              Ha ocurrido un error imprevisto mientras guardábamos tus cambios,
-              por favor inténtalo otra vez
-              <Button
-                variant="secondary"
-                className="py-1.5 px-2 h-auto ml-2 text-destructive"
-                onClick={() => setEditionSuccess(null)}
-              >
-                Cerrar
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
-        <div>
-          <TitleArtifactField
-            field={manipulableConfig.at(0)}
-            updateArtifact={updateArtifactFields}
-            value={artifactFields.at(0).value}
-            disabled={!editing}
-          />
-        </div>
+    <div className="grow p-2 h-screen max-h-screen">
+      <div className="border rounded-lg max-h-full shadow-md overflow-y-auto">
+        <div className="py-8 px-5 flex flex-col max-w-lg md:max-w-3xl md:m-auto sm:px-16 space-y-4 ">
+          {editionSuccess === true && (
+            <Alert>
+              <CheckCircle className="h-4 w-4" />
+              <AlertTitle>¡Cambios guardados!</AlertTitle>
+              <AlertDescription>
+                Tus cambios en
+                <span className="italic"> {artifactFields.at(0).value}</span> se
+                han guardado exitosamente
+                <Button
+                  variant="secondary"
+                  className="py-1.5 px-2 h-auto ml-2"
+                  onClick={() => setEditionSuccess(null)}
+                >
+                  Aceptar
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+          {editionSuccess === false && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error inesperado</AlertTitle>
+              <AlertDescription>
+                Ha ocurrido un error imprevisto mientras guardábamos tus
+                cambios, por favor inténtalo otra vez
+                <Button
+                  variant="secondary"
+                  className="py-1.5 px-2 h-auto ml-2 text-destructive"
+                  onClick={() => setEditionSuccess(null)}
+                >
+                  Cerrar
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
+          <div>
+            <TitleArtifactField
+              field={manipulableConfig.at(0)}
+              updateArtifact={updateArtifactFields}
+              value={artifactFields.at(0).value}
+              disabled={!editing}
+            />
+          </div>
 
-        {manipulableConfig.length === 1 ? (
-          <ArtifactViewForm
-            config={config}
-            editing={editing}
-            project={project}
-            updateArtifactFields={updateArtifactFields}
-            values={{}}
-          />
-        ) : (
-          <ArtifactViewForm
-            config={manipulableConfig}
-            editing={editing}
-            project={project}
-            updateArtifactFields={updateArtifactFields}
-            values={artifact.parameterArtifact}
-          />
-        )}
+          {manipulableConfig.length === 1 ? (
+            <ArtifactViewForm
+              config={config}
+              editing={editing}
+              project={project}
+              updateArtifactFields={updateArtifactFields}
+              values={{}}
+            />
+          ) : (
+            <ArtifactViewForm
+              config={manipulableConfig}
+              editing={editing}
+              project={project}
+              updateArtifactFields={updateArtifactFields}
+              values={artifact.parameterArtifact}
+            />
+          )}
 
-        <div className="flex flex-row justify-end space-x-2">
-          {!editing && (
-            <Button variant="secondary" onClick={() => setEditing(true)}>
-              Editar
-            </Button>
-          )}
-          {editing && (
-            <Button
-              variant="ghost"
-              onClick={() => {
-                configArtifactFields();
-                setEditing(false);
-              }}
-            >
-              Cancelar
-            </Button>
-          )}
-          {editing && (
-            <Button
-              onClick={async () => {
-                setEditing(false);
-                await saveEditedArtifact();
-              }}
-            >
-              Guardar
-            </Button>
-          )}
+          <div className="flex flex-row justify-end space-x-2">
+            {!editing && (
+              <Button variant="secondary" onClick={() => setEditing(true)}>
+                Editar
+              </Button>
+            )}
+            {editing && (
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  configArtifactFields();
+                  setEditing(false);
+                }}
+              >
+                Cancelar
+              </Button>
+            )}
+            {editing && (
+              <Button
+                onClick={async () => {
+                  setEditing(false);
+                  await saveEditedArtifact();
+                }}
+              >
+                Guardar
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

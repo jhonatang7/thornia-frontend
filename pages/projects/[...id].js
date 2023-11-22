@@ -1,6 +1,6 @@
 import { Menu, Loader2 } from "lucide-react";
 import { NewArtifact } from "@/components/project/new-artifact";
-import { ProjectNavBar } from "@/components/project/project-navbar";
+import { ProjectSideBar } from "@/components/project/sidebar/project-sidebar";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -60,12 +60,14 @@ export default function ProjectById() {
       >
         <Menu />
       </Button>
-      <div className="flex flex-row-reverse">
-        <ProjectNavBar
+      <div className="flex flex-row">
+        <ProjectSideBar
           showSidebar={showSidebar}
           toggleSidebarButtonVisibility={toggleSidebarButtonVisibility}
           projectId={router.query.id[0]}
           project={project}
+          selectedArtifactId={router.query.item ? router.query.item : null}
+          selectedArtifactType={router.query.type ? router.query.type : null}
         />
         {router.query.id.length == 2 && projectPages[router.query.id.at(1)]}
         {router.query.item && router.query.type && (
