@@ -22,7 +22,11 @@ export function NewArtifactPopover({ projectId }) {
 
   return (
     <Popover open={isOpen}>
-      <PopoverTrigger className="w-full" onClick={() => setIsOpen(true)}>
+      <PopoverTrigger
+        className="w-full"
+        onClick={() => setIsOpen(true)}
+        asChild
+      >
         <Button
           variant="outline"
           className="w-full justify-start align-middle rounded-lg px-1.5 py-1 h-auto text-base font-normal text-muted-foreground"

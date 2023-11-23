@@ -84,7 +84,7 @@ export function ArtifactView({ config, artifactId, type, project }) {
 
   return artifact && artifactFields && getArtifactReqStatus === true ? (
     <div className="grow p-2 h-screen max-h-screen">
-      <div className="border rounded-lg max-h-full shadow-md overflow-y-auto">
+      <div className="border rounded-lg min-h-full h-full max-h-full shadow-md overflow-y-auto">
         <div className="py-8 px-5 flex flex-col max-w-lg md:max-w-3xl md:m-auto sm:px-16 space-y-4 ">
           {editionSuccess === true && (
             <Alert>
