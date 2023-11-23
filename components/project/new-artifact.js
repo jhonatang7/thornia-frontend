@@ -78,59 +78,64 @@ export function NewArtifact({ project, config, title, type }) {
   };
 
   return (
-    <div className="grow py-8 px-5">
-      <div className="flex flex-col max-w-lg md:max-w-2xl md:m-auto sm:px-16 space-y-4">
-        <div>
-          <p className="text-sm text-muted-foreground">Nuevo {title}</p>
-          <TitleArtifactField
-            field={config.at(0)}
-            updateArtifact={updateArtifact}
-          />
-        </div>
+    <div className="grow p-2 h-screen max-h-screen">
+      <div className="border rounded-lg min-h-full h-full max-h-full shadow-md overflow-y-auto">
+        <div className="py-8 px-5 flex flex-col max-w-lg md:max-w-2xl md:m-auto sm:px-16 space-y-4">
+          <div>
+            <p className="text-sm text-muted-foreground">Nuevo {title}</p>
+            <TitleArtifactField
+              field={config.at(0)}
+              updateArtifact={updateArtifact}
+            />
+          </div>
 
-        {config.slice(1).map((e, index) => (
-          <div key={e + index}>
-            {e.type === "member" && (
-              <MemberArtifactField
-                field={e}
-                members={project.memberIds}
-                updateArtifact={updateArtifact}
-              />
-            )}
+          {config.slice(1).map((e, index) => (
+            <div key={e + index}>
+              {e.type === "member" && (
+                <MemberArtifactField
+                  field={e}
+                  members={project.memberIds}
+                  updateArtifact={updateArtifact}
+                />
+              )}
 
-            {e.type === "selection" && (
-              <SelectionArtifactField
-                field={e}
-                updateArtifact={updateArtifact}
-              />
-            )}
+              {e.type === "selection" && (
+                <SelectionArtifactField
+                  field={e}
+                  updateArtifact={updateArtifact}
+                />
+              )}
 
-            {e.type === "text" && (
-              <TextArtifactField field={e} updateArtifact={updateArtifact} />
-            )}
+              {e.type === "text" && (
+                <TextArtifactField field={e} updateArtifact={updateArtifact} />
+              )}
 
-            {e.type === "numeric" && (
-              <NumericArtifactField field={e} updateArtifact={updateArtifact} />
-            )}
+              {e.type === "numeric" && (
+                <NumericArtifactField
+                  field={e}
+                  updateArtifact={updateArtifact}
+                />
+              )}
 
-            {e.type === "datetime" && (
-              <TimeArtifactField field={e} updateArtifact={updateArtifact} />
+              {e.type === "datetime" && (
+                <TimeArtifactField field={e} updateArtifact={updateArtifact} />
+              )}
+            </div>
+          ))}
+
+          <div className="flex flex-row justify-end space-x-2">
+            <Button variant="ghost" disabled={creationStatus === "inprogress"}>
+              Cancelar
+            </Button>
+            {creationStatus === "inprogress" ? (
+              <Button disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                En progreso...
+              </Button>
+            ) : (
+              <Button onClick={saveArtifact}>Crear</Button>
             )}
           </div>
-        ))}
-
-        <div className="flex flex-row justify-end space-x-2">
-          <Button variant="ghost" disabled={creationStatus === "inprogress"}>
-            Cancelar
-          </Button>
-          {creationStatus === "inprogress" ? (
-            <Button disabled>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              En progreso...
-            </Button>
-          ) : (
-            <Button onClick={saveArtifact}>Crear</Button>
-          )}
         </div>
       </div>
     </div>
