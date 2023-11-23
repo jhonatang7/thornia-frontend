@@ -5,6 +5,13 @@ import { getArtifact, updateArtifact } from "@/services/artifact-service";
 import { useEffect, useState } from "react";
 import { ArtifactViewForm } from "./artifact-view-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Icon from "@mdi/react";
+import {
+  mdiTestTubeEmpty,
+  mdiGraphOutline,
+  mdiFileDocumentOutline,
+  mdiBugOutline,
+} from "@mdi/js";
 
 export function ArtifactView({ config, artifactId, type, project }) {
   const [editionSuccess, setEditionSuccess] = useState(null);
@@ -82,9 +89,43 @@ export function ArtifactView({ config, artifactId, type, project }) {
     requestArtifact();
   }, [artifactId, type]);
 
+  const typeLabel = {
+    lltc: "Casos de Prueba de Bajo Nivel",
+    hltc: "Casos de Prueba de Alto Nivel",
+    bug: "Errores (bugs)",
+  };
+
+  const typeIconPath = {
+    lltc: mdiTestTubeEmpty,
+    hltc: mdiTestTubeEmpty,
+    bug: mdiBugOutline,
+  };
+
+  const statusColor = {
+    Pendiente: "bg-gray-300",
+    Aprobado: "bg-lime-400",
+    Fallido: "bg-rose-500",
+    "En progreso": "bg-orange-300",
+    Resuelto: "bg-lime-400",
+  };
+
   return artifact && artifactFields && getArtifactReqStatus === true ? (
     <div className="grow p-2 h-screen max-h-screen">
       <div className="border rounded-lg min-h-full h-full max-h-full shadow-md overflow-y-auto">
+        <div className="flex flex-row items-center border-b space-x-2 p-1.5">
+          <Icon
+            path={typeIconPath[type]}
+            className="w-6 h-6 rounded-sm bg-lime-50 text-green-600 p-1 dark:bg-lime-950 dark:text-green-500"
+          />
+          <p>{typeLabel[type]}</p>
+          <p className="font-semibold">/</p>
+          <div
+            className={`w-3 h-3 aspect-square rounded-full ${
+              statusColor[artifactFields.at(1).value]
+            }`}
+          ></div>
+          <p>{artifactFields.at(0).value.substring(0, 33)}...</p>
+        </div>
         <div className="py-8 px-5 flex flex-col max-w-lg md:max-w-3xl md:m-auto sm:px-16 space-y-4 ">
           {editionSuccess === true && (
             <Alert>
