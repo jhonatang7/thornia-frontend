@@ -1,4 +1,4 @@
-import { BarChart3, ChevronsUpDown, X, Plus, SearchIcon } from "lucide-react";
+import { BarChart3, ChevronsUpDown, X } from "lucide-react";
 import Icon from "@mdi/react";
 import {
   mdiTestTubeEmpty,
@@ -15,25 +15,7 @@ import {
 import { ArtifactCollapsible } from "./artifact-category-collapsible/artifact-collapsible";
 import { createContext, useEffect, useRef, useState } from "react";
 import { NewArtifactPopover } from "./new-artifact-popover";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command";
+import { CommandPanel } from "./command-panel";
 
 export const SelectedArtifactContext = createContext({});
 
@@ -91,47 +73,7 @@ export function ProjectSideBar({
 
         <div className="flex flex-row space-x-2">
           <NewArtifactPopover projectId={projectId} />
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-auto px-2 py-1 w-auto rounded-lg"
-              >
-                <SearchIcon className="w-4 h-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Búsqueda</DialogTitle>
-                <DialogDescription>
-                  <Command className="rounded-lg border">
-                    <CommandInput placeholder="Busca un caso de prueba, bug..." />
-                    <CommandList>
-                      <CommandEmpty>No results found.</CommandEmpty>
-                      <CommandGroup heading="Casos de Prueba de Bajo Nivel">
-                        <CommandItem>Calendar</CommandItem>
-                        <CommandItem>Search Emoji</CommandItem>
-                        <CommandItem>Calculator</CommandItem>
-                      </CommandGroup>
-                      <CommandSeparator />
-                      <CommandGroup heading="Casos de Prueba de Alto Nivel">
-                        <CommandItem>Profile</CommandItem>
-                        <CommandItem>Billing</CommandItem>
-                        <CommandItem>Settings</CommandItem>
-                      </CommandGroup>
-                      <CommandGroup heading="Errores (bugs)">
-                        <CommandItem>Profile</CommandItem>
-                        <CommandItem>Billing</CommandItem>
-                        <CommandItem>Settings</CommandItem>
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+          <CommandPanel />
         </div>
 
         <div className="flex flex-col min-w-full md:flex-row md:space-x-2 md:space-y-0 space-y-1 text-accent-foreground">
