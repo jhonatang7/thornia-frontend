@@ -16,6 +16,7 @@ import { ArtifactCollapsible } from "./artifact-category-collapsible/artifact-co
 import { createContext, useEffect, useRef, useState } from "react";
 import { NewArtifactPopover } from "./new-artifact-popover";
 import { CommandPanel } from "./command-panel";
+import { useRouter } from "next/router";
 
 export const SelectedArtifactContext = createContext({});
 
@@ -25,6 +26,7 @@ export function ProjectSideBar({
   projectId,
   project,
 }) {
+  const router = useRouter();
   const [selectedArtifactItem, setSelectedArtifactItem] = useState({});
   const sidebarRef = useRef(null);
   const artifactType = {
@@ -39,6 +41,12 @@ export function ProjectSideBar({
     sidebarRef.current.classList.toggle("hidden");
     sidebarRef.current.classList.toggle("flex");
     toggleSidebarButtonVisibility();
+  };
+  const navigateToTestPlan = () => {
+    router.push({
+      pathname: `/projects/${projectId}`,
+      query: { type: "testplan" },
+    });
   };
 
   return (
@@ -87,6 +95,7 @@ export function ProjectSideBar({
           <Button
             variant="outline"
             className="flex grow md:flex-col flex-row px-2 py-1.5 md:space-y-1 md:space-x-0 space-x-1 h-min font-normal"
+            onClick={navigateToTestPlan}
           >
             <Icon path={mdiFileDocumentOutline} className="w-5 h-5" />
             <span>Test plan</span>

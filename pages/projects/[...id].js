@@ -9,6 +9,7 @@ import { ArtifactView } from "@/components/project/artifact-view";
 import { Toaster } from "@/components/ui/toaster";
 import { newArtifactPages } from "@/components/project/new-artifact-pages";
 import { ProjectsMembersProvider } from "@/components/providers/project-members-provider";
+import { TestPlanView } from "@/components/project/test-plan/test-plan-view";
 
 export default function ProjectById() {
   const router = useRouter();
@@ -78,6 +79,7 @@ export default function ProjectById() {
             project={project}
           />
         )}
+        {router.query.type === "testplan" && <TestPlanView />}
       </div>
       <Toaster />
     </ProjectsMembersProvider>
