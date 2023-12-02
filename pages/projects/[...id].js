@@ -79,7 +79,9 @@ export default function ProjectById() {
             project={project}
           />
         )}
-        {router.query.type === "testplan" && <TestPlanView />}
+        {router.query.type === "testplan" && (
+          <TestPlanView projectId={project.id} />
+        )}
       </div>
       <Toaster />
     </ProjectsMembersProvider>
