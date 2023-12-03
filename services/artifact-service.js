@@ -3,8 +3,8 @@ import {
   localStorageKeys,
 } from "./client-storage-service";
 
-export async function getArtifacts(queryParams) {
-  const queryString = new URLSearchParams(queryParams).toString();
+export async function getArtifacts({ projectId, type }) {
+  const queryString = new URLSearchParams({ projectId, type }).toString();
   try {
     let response = await fetch(
       `${process.env.NEXT_PUBLIC_API_HOST}/artifact/list?${queryString}`,
@@ -130,8 +130,8 @@ export async function updateArtifact(id, artifactFields, type) {
   }
 }
 
-export async function searchArtifacts(queryParams) {
-  const queryString = new URLSearchParams(queryParams).toString();
+export async function searchArtifacts({ type, text }) {
+  const queryString = new URLSearchParams({ type, text }).toString();
   try {
     let response = await fetch(
       `${process.env.NEXT_PUBLIC_API_HOST}/artifact/searchartifacts?${queryString}`,
