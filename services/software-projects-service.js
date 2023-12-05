@@ -100,3 +100,57 @@ export async function getMemberList(memberIds) {
     return { success: false };
   }
 }
+
+export async function createProjectVersion(projectId, version) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/projects/commit`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify({ projectId, version }),
+      }
+    );
+
+    if (response.status === 200) {
+      return { success: true };
+    } else if (response.status === 204) {
+      return { success: false };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function getProjectVerions(projectId) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/projects/versions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getFromLocalStorage(
+            localStorageKeys.token
+          )}`,
+        },
+        body: JSON.stringify({ projectId }),
+      }
+    );
+    if (response.ok) {
+      let versions = await response.json();
+      return { success: true, payload: versions };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    return { success: false };
+  }
+}
